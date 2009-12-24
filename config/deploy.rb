@@ -31,7 +31,7 @@ set :scm, :git
 set :application, "getset" 
 
 # the url for your repository, This is displayed in the source repo control panel after clicking on your project
-set :repository,  "git@getset.sourcerepo.com:getset/getset.git"
+set :repository,  "git@getset.sourcerepo.com:getset/getset.git "
 
 # The domain(without the www) or subdomain you would like to deploy this application to
 set :domain_name , "getsetapp.com"
