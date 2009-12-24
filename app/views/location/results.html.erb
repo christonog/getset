@@ -1,0 +1,17 @@
+
+<h1> Here's how much it will cost to get to <%= @location.city_to %> from <%= @location.city_from %> </h1>
+
+<p>
+<p>
+<p>
+<h2>One Way:</h2>
+<%= number_to_currency(@location.gas_cost) %>
+<p>
+<p>
+<h2>Round Trip: </h2>
+<%= number_to_currency(@location.round_trip) %>
+<p>
+<p>
+<%= link_to "Find more gas costs", :action => "start" %>
+<p>
+<%= link_to "About Us", :action => "about" %>

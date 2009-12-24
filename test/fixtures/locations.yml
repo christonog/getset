@@ -1,0 +1,9 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  city_to: MyString
+  city_from: MyString
+
+two:
+  city_to: MyString
+  city_from: MyString

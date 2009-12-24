@@ -1,0 +1,25 @@
+<h1> Find out how much gas it costs for your trip.</h1>
+<% form_for :location, @location, :url => {:action => "results"} do |f| %>
+  <%= f.error_messages %>
+<%= f.label :city_to, "Where do you want to go?" %>
+<p>
+<%= f.text_field :city_to %>
+<p>
+<%= f.label :city_from, "Where are you coming from?" %>
+<p>
+<%= f.text_field :city_from %>
+<p>
+<%= f.label :gas_price, "Enter a gas price." %>
+<p>
+<%= f.text_field :gas_price %>
+<p>
+<%= f.label :gas_mileage, "Enter the gas mileage of your car." %>
+<p>
+<%= f.text_field :gas_mileage %>
+<p>
+<p>
+<%= submit_tag "Go" %>
+
+<% end %>
+<p>
+<%= link_to "About Us", :action => "about" %>

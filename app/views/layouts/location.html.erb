@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta name="google-site-verification" content="panm4pQbQSLqyZwgzbL1ClHfm3xM9lhx97Hmz0UMnSY" />
+    <title><%= @title %></title>
+    <meta name="Description" content=<%= @meta_description %>>
+		<%= stylesheet_link_tag "scaffold", :media => "all" %>
+</head>
+
+<body>
+	<%= image_tag("getset_logo.png") %>
+			<%= yield :layout %>
+<p>
+
+<p> Like our tool? Help us make it better by <%= mail_to "feedeback@getsetapp.com", "<b>sending us Feedback.<b>" %> </p>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-11727785-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+</html>
