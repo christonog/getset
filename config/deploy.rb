@@ -42,7 +42,7 @@ set :use_sudo, false
 
 ###### There is no need to edit anything below this line ######
 
-set :user , "root"
+set :user , "getsetap"
 set :domain_password, Proc.new {CLI.password_prompt "desired domain password: "}
 set :database_password, Proc.new {CLI.password_prompt "desired database password: "}
 set :deploy_to, "/home/admin/#{application}"
