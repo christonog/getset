@@ -45,7 +45,7 @@ set :use_sudo, false
 set :user , "getsetap"
 set :domain_password, Proc.new {CLI.password_prompt "desired domain password: "}
 set :database_password, Proc.new {CLI.password_prompt "desired database password: "}
-set :deploy_to, "/home/admin/#{application}"
+set :deploy_to, "/home/admin/getset"
 set :shared_directory, "#{deploy_to}/shared"
 set :use_sudo, false
 set :group_writable, false
