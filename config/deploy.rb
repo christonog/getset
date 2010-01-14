@@ -45,7 +45,7 @@ set :use_sudo, false
 set :user, "getsetap"
 set :domain_password, Proc.new {CLI.password_prompt "desired domain password: "}
 set :database_password, Proc.new {CLI.password_prompt "desired database password: "}
-set :deploy_to, "/home/admin/getset"
+set :deploy_to, "/home/getsetap/getset"
 set :shared_directory, "#{deploy_to}/shared"
 set :use_sudo, false
 set :group_writable, false
@@ -57,7 +57,7 @@ role :db,  ip_address, :primary => true
 
 task :after_update_code, :roles => [:web, :db, :app] do
   run "chmod 755 #{release_path}/public"
-  run "chown admin:admin #{release_path} -R"
+  run "chown getsetap:getsetap #{release_path} -R"
   begin
     run "rm -f #{release_path}/config/database.yml"
   rescue Exception => error
@@ -95,7 +95,7 @@ task :setup_domain, :hosts => ip_address do
   database_config = "production:\n  adapter: mysql\n  encoding: utf8\n  database: #{database_name}\n  username: #{database_name}\n  password: #{database_password}"
   puts database_config
   put database_config, "#{shared_directory}/database.yml"
-  run "rm -rf /home/admin/#{application}/current"
+  run "rm -rf /home/getsetap/#{application}/current"
   puts "\n\nYou will now login to hypervm at https://vps.webhostserver.biz:8887, click on DNS and add zone record for #{domain_name}, then set your nameservers for your domain at your domain registrar to ns1.vpsplayground.net and ns2.vpsplayground.net\n\n"
 
 end
