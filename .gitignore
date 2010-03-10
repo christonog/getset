@@ -3,6 +3,7 @@
 tmp/*
 tmp/**/*
 doc/api
+config/database.yml
 doc/app
 db/*.sqlite3
 *.swp
