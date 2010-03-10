@@ -14,6 +14,14 @@ role :web, ip
 role :app, ip
 role :db, ip, :primary => true
 
-set :deploy_to, "/home/#{user}/#{applicationdir}" 
+set :deploy_to, "/home/#{user}/#{applicationdir}"
+set :shared_dir, "#{deploy_to}/shared"
+set :release_path, "/#{deploy_to}/current"
 set :group_writable, false
+
+desc "Link in the production database.yml" 
+task :after_update_code do
+  run "ln -nfs #{deploy_to}/#{shared_dir}/config/database.yml #{release_path}/config/database.yml" 
+end
+
 
