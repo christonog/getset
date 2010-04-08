@@ -1,0 +1,29 @@
+<h1> Contact Us <h1>
+
+<p> Got a question? Want to submit feedback? Or just say hello?</p>
+
+<% form_for(:contact, :url => contact_path) do |form| %>
+  <p>
+    <%= form.label :subject %><br />
+    <%= form.text_field :subject %>
+  </p>
+
+  <p>
+    <%= form.label :name %><br />
+    <%= form.text_field :name %>
+  </p>
+
+  <p>
+    <%= form.label :email %><br />
+    <%= form.text_field :email %>
+  </p>
+
+  <p>
+    <%= form.label :body %><br />
+    <%= form.text_area :body %>
+  </p>
+
+  <p>
+    <%= form.submit "Send" %>
+  </p>
+<% end %>

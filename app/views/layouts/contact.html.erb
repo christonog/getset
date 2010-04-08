@@ -10,11 +10,10 @@
 </head>
 
 <body>
-	<%= link_to(image_tag("getset_logo.png", :border => 0), {:controller => "location", :action => "start"}) %>
+	<%= image_tag("getset_logo.png") %>
 			<%= yield :layout %>
 <p>
 
-<p> Like our tool? Help us make it better by <%= link_to "<b> Sending Us Feedback </b>", contact_path %> </p>
 
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

@@ -1,6 +1,16 @@
 ActionController::Routing::Routes.draw do |map|
   
   map.resources :locations
+  map.with_options :controller => 'contact' do |contact|
+    contact.contact '/contact',
+      :action => 'index',
+      :conditions => { :method => :get }
+
+    contact.contact '/contact',
+      :action => 'create',
+      :conditions => { :method => :post }
+  end
+  
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
