@@ -10,6 +10,7 @@ ActionController::Routing::Routes.draw do |map|
       :action => 'create',
       :conditions => { :method => :post }
   end
+  map.about_us '/about', :controller => "location", :action => "about"
   
   # The priority is based upon order of creation: first created -> highest priority.
 

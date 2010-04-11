@@ -10,8 +10,8 @@
 </head>
 
 <body>
-	<%= image_tag("getset_logo.png") %>
-			<%= yield :layout %>
+<%= link_to(image_tag("getset_logo.png", :border => 0), {:controller => "location", :action => "start"}) %>
+		<%= yield :layout %>
 <p>
 
 
