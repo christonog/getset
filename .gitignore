@@ -6,6 +6,7 @@ doc/api
 config/database.yml
 doc/app
 public/.htaccess
+public/blog
 db/*.sqlite3
 *.swp
 *~
