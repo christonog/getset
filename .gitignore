@@ -5,6 +5,7 @@ tmp/**/*
 doc/api
 config/database.yml
 doc/app
+public/.htaccess
 db/*.sqlite3
 *.swp
 *~

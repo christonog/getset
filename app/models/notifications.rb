@@ -1,4 +1,4 @@
-class Notifications < ActionMailer::Base
+class Notifications < ActionMailer::Base  
     def contact(email_params)
       subject "[Getset] " << email_params[:subject]
       recipients "feedback@getsetapp.com"
