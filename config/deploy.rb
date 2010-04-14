@@ -24,6 +24,6 @@ end
 
 desc "Link Wordpress" 
 task :after_update_code do
-  run "ln -s #{shared_path}/wordpress #{release_path}/public/" 
+  run "ln -s #{shared_path}/blog #{release_path}/public/" 
 end
 
