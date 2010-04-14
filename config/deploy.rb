@@ -22,4 +22,8 @@ task :after_update_code do
   run "ln -s #{shared_path}/config/database.yml #{release_path}/config/database.yml" 
 end
 
+desc "Link Wordpress" 
+task :after_update_code do
+  run "ln -s #{shared_path}/wordpress #{release_path}/public/" 
+end
 
