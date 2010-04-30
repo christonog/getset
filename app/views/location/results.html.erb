@@ -12,6 +12,12 @@
 <%= number_to_currency(@location.round_trip) %>
 <p>
 <p>
-<%= link_to "Find more gas costs", :action => "start" %>
+<p> 
+<p> This will likely return a bunch of feeds, need to find the cheapest one for the month --></p>
+<p> CITY FROM: <%= @location.origin_iata_code %></br>
+<p> CITY TO: <%= @location.destination_iata_code %><p/></br>
+
+<p><%= @location.get_kayak_feed %>
+<p><%= link_to "Find more gas costs", :action => "start" %>
 <p>
 <%= link_to "About Us", :action => "about" %>

@@ -1,13 +1,22 @@
 <h1> Find out how much gas it costs for your trip.</h1>
-<% form_for :location, @location, :url => {:action => "results"} do |f| %>
+
+<% semantic_form_for :location, @location, :url => {:action => "results"} do |f| %>
   <%= f.error_messages %>
 <%= f.label :city_to, "Where do you want to go?" %>
 <p>
-<%= f.text_field :city_to %>
+<%= f.input :city_to, :as => :select, :collection => ["Raleigh, NC", 
+                                                      "New York, NY - JFK", 
+                                                      "New York, NY - LGA", 
+                                                      "Los Angeles, CA", 
+                                                      "Dallas/Ft. Worth, TX"] %>
 <p>
 <%= f.label :city_from, "Where are you coming from?" %>
 <p>
-<%= f.text_field :city_from %>
+<%= f.input :city_from, :as => :select, :collection => ["Raleigh, NC", 
+                                                      "New York, NY - JFK", 
+                                                      "New York, NY - LGA", 
+                                                      "Los Angeles, CA", 
+                                                      "Dallas/Ft. Worth, TX"] %>
 <p>
 <%= f.label :gas_price, "Enter a gas price." %>
 <p>
