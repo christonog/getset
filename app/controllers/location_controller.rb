@@ -16,7 +16,7 @@ class LocationController < ApplicationController
 
   def results
     @location = Location.new(params[:location])
-    @title = "Driving cost from #{@location.city_from} to #{@location.city_to} "  
+    @title = "Driving cost from #{@location.city_from} to #{@location.city_to}"  
   end
   
   def about

@@ -1,10 +1,10 @@
-<h1> Find out how much gas it costs for your trip.</h1>
+<h1> Compare your Travel Costs</h1>
 
 <% semantic_form_for :location, @location, :url => {:action => "results"} do |f| %>
   <%= f.error_messages %>
 <%= f.label :city_to, "Where do you want to go?" %>
 <p>
-<%= f.input :city_to, :as => :select, :collection => ["Raleigh, NC", 
+<%= f.input :city_to, :as => :select, :collection => ["Raleigh, NC - RDU", 
                                                       "New York, NY - JFK", 
                                                       "New York, NY - LGA", 
                                                       "Los Angeles, CA", 
@@ -12,11 +12,11 @@
 <p>
 <%= f.label :city_from, "Where are you coming from?" %>
 <p>
-<%= f.input :city_from, :as => :select, :collection => ["Raleigh, NC", 
+<%= f.input :city_from, :wrapper_html => { :style => "" }, :as => :select, :collection => ["Raleigh, NC - RDU", 
                                                       "New York, NY - JFK", 
                                                       "New York, NY - LGA", 
-                                                      "Los Angeles, CA", 
-                                                      "Dallas/Ft. Worth, TX"] %>
+                                                      "Los Angeles, CA - LAX", 
+                                                      "Dallas/Ft. Worth, TX - DFW"] %>
 <p>
 <%= f.label :gas_price, "Enter a gas price." %>
 <p>

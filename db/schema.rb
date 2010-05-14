@@ -9,7 +9,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091106010431) do
+ActiveRecord::Schema.define(:version => 20100508170842) do
+
+  create_table "iatas", :force => true do |t|
+    t.string   "iata_city"
+    t.string   "iata_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "kayak_feeds", :force => true do |t|
+    t.string   "name"
+    t.text     "summary"
+    t.string   "url"
+    t.datetime "published_at"
+    t.string   "guid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "locations", :force => true do |t|
     t.string   "city_to"
@@ -18,6 +35,11 @@ ActiveRecord::Schema.define(:version => 20091106010431) do
     t.datetime "updated_at"
     t.float    "gas_mileage"
     t.float    "gas_price"
+    t.string   "name"
+    t.text     "summary"
+    t.string   "url"
+    t.datetime "published_at"
+    t.string   "guid"
   end
 
 end

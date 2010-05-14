@@ -4,20 +4,20 @@
 <p>
 <p>
 <p>
-<h2>One Way:</h2>
+<h2> Cost to Drive: </h2>
+<h3>One Way:</h3>
 <%= number_to_currency(@location.gas_cost) %>
 <p>
 <p>
-<h2>Round Trip: </h2>
+<h3>Round Trip: </h3>
 <%= number_to_currency(@location.round_trip) %>
 <p>
 <p>
 <p> 
-<p> This will likely return a bunch of feeds, need to find the cheapest one for the month --></p>
-<p> CITY FROM: <%= @location.origin_iata_code %></br>
-<p> CITY TO: <%= @location.destination_iata_code %><p/></br>
+<h2> Cost to Fly: </h2>
+<h3> Round Trip </h3>
+<%= @location.get_kayak_feed %>
 
-<p><%= @location.get_kayak_feed %>
-<p><%= link_to "Find more gas costs", :action => "start" %>
+<p><%= link_to "Compare travel options for your next destination", :action => "start" %>
 <p>
 <%= link_to "About Us", :action => "about" %>
