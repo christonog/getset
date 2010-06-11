@@ -65,7 +65,7 @@ IATA_CITY_CODE_MAPPING = { "Atlanta, GA" => "ATL",
                         "Cleveland, OH" => "CLE",
                         "Columbus, OH" => "CMH",
                         "Colorado Springs, CO" => "COS",
-                        "Dallas/Ft. Worth, TX" => "DFW",
+                        "Dallas, TX" => "DFW",
                         "Denver, CO" => "DEN",
                         "Detroit, MI" => "DTW",
                         "Fort Lauderdale, FL" => "FLL",
@@ -101,49 +101,82 @@ IATA_CITY_CODE_MAPPING = { "Atlanta, GA" => "ATL",
                         "San Jose, CA" => "SJC",
                         "Santa Ana, CA" => "SNA",
                         "Seattle, WA" => "SEA",
-                        "St. Louis, MO" => "STL",
+                        "St Louis, MO" => "STL",
                         "Tampa, FL" => "TPA",
-                        "Washington, D.C. - IAD" => "IAD", #need to make sure to change the D.C. to DC to adhere to Greyhound 
-                        "Washington, D.C. - DCA" => "DCA"}
+                        "Washington, DC - IAD" => "IAD", #need to make sure to change the D.C. to DC to adhere to Greyhound 
+                        "Washington, DC - DCA" => "DCA"}
                         
 # These methods are to interpolate the url string with the parameters from the view
-# This is to get the 
-# Need to format the views to match the right formatting in the url
-
-# def get_bus_cost()
-#  url = "https://www.greyhound.com/farefinder/step2.aspx?Redirect=Y&Version=1.0&OriginID=340660&OriginCity=Miami&OriginState=FL&DestinationID=151239&DestinationCity=Raleigh&DestinationState=NC&Children=0&Legs=1&Adults=1&Seniors=0&DYear=110&DMonth=6&DDay=5 &DHr="
-#  doc = Nokogiri::HTML(open(url))
-#  puts doc.at_css("#ctl00_ContentHolder_DepartureGrid_ctl00__0 :nth-child(5)").text[/\$[0-9\.]+/]  
-# end
-
+# This is to get the bus cost
 # parameters for the url string interpolation
 
 T = Time.now
 
 
-def dYear
-  T.strftime("1"+"%y") #the formatting in the greyhound url is 1 + the last two digits of the current year ie, 110 for the year 2010
-end
+  def dYear
+    T.strftime("1"+"%y") #the formatting in the greyhound url is 1 + the last two digits of the current year ie, 110 for the year 2010
+  end
 
-def dMonth
-  T.month
-end
+  def dMonth
+    T.month
+  end
 
-def dDay
-  T.day
-end
+  def dDay
+    T.day
+  end
 
-def rYear
-  t = 7.days.from_now #same formatting as the dYear
-  t.strftime("1"+"%y")
-end
+  def rYear
+    t = 7.days.from_now #same formatting as the dYear
+    t.strftime("1"+"%y")
+  end
 
-def rMonth
-  7.days.from_now.month
-end
+  def rMonth
+    7.days.from_now.month
+  end
 
-def rDay
-  7.days.from_now.day
-end
+  def rDay
+    7.days.from_now.day
+  end
+  
+  def busOriginState
+    regex_parse = /[A-Z]{2}/
+    regex_test1 = Regexp.new(regex_parse)
+    matchdata = regex_test1.match(city_from)
+    matchdata.to_s
+  end
+  
+  def busOriginCity
+     city_from_regex = /^[^,]*/
+     regex_test1 = Regexp.new(city_from_regex)
+     matchdata = regex_test1.match(city_from)
+     cgi_escaped_city = CGI.escape(matchdata.to_s)
+     cgi_escaped_city
+   end
+   
+   def busDestinationState
+     regex_parse = /[A-Z]{2}/
+     regex_test1 = Regexp.new(regex_parse)
+     matchdata = regex_test1.match(city_to)
+     matchdata.to_s
+   end
+
+   def busDestinationCity
+      city_to_regex = /^[^,]*/
+      regex_test1 = Regexp.new(city_to_regex)
+      matchdata = regex_test1.match(city_to)
+      cgi_escaped_city = CGI.escape(matchdata.to_s)
+      cgi_escaped_city
+    end
+  
+  # Need to format the views to match the right formatting in the url
+
+  def get_bus_cost()
+    url = "https://www.greyhound.com/farefinder/step2.aspx?Redirect=Y&Version=1.0&OriginID=340660&OriginCity=#{busOriginCity}&OriginState=#{busOriginState}&DestinationID=151239&DestinationCity=#{busDestinationCity}&DestinationState=#{busDestinationState}&Children=0&Legs=1&Adults=1&Seniors=0&DYear=#{dYear}&DMonth=#{dMonth}&DDay=#{dDay}&DHr=&RYear=#{rYear}&RMonth=#{rMonth}&RDay=#{rDay}&RHr="
+    doc = Nokogiri::HTML(open(url))
+    bus_price = doc.at_css("#ctl00_ContentHolder_DepartureGrid_ctl00__0 :nth-child(5)").text[/\$[0-9\.]+/]
+    if bus_price == nil
+      "nothing available at this time."
+    end  
+  end
 end
 
