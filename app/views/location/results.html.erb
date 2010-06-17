@@ -21,7 +21,8 @@
 <p>
 <p>
 <h2> Bus Cost </h2>
-<%= @location.get_bus_cost %>
+<%= number_to_currency(@location.get_bus_cost) %></ br>
+<%= @time %> to <%= @future_time %>
 
 <p><%= link_to "Compare travel options for your next destination", :action => "start" %>
 <p>

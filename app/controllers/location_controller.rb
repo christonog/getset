@@ -16,7 +16,9 @@ class LocationController < ApplicationController
 
   def results
     @location = Location.new(params[:location])
-    @title = "Flight and driving cost from #{@location.city_from} to #{@location.city_to}"  
+    @title = "Flight and driving cost from #{@location.city_from} to #{@location.city_to}"
+    @time = 8.hours.from_now.strftime("%m/%d/%Y")
+    @future_time = 7.days.from_now.strftime("%m/%d/%Y")  
   end
   
   def about
