@@ -6,7 +6,7 @@
 <p>
 <h2> Cost to Drive: </h2>
 <h3>One Way:</h3>
-<%= number_to_currency(@location.fixed_car_gas_cost) %>
+<p><%= number_to_currency(@location.fixed_car_gas_cost) %> for gas.</p>
 <p>
 <p>
 <h3>Round Trip: </h3>
@@ -20,10 +20,13 @@
 <p>
 <p>
 <p>
-<h2> Bus Cost </h2>
-<%= number_to_currency(@location.get_bus_cost) %></ br>
+<h2> Bus Cost: </h2>
+<%= @location.get_bus_cost %></ br>
+<p>
+<p>
 <%= @time %> to <%= @future_time %>
 
 <p><%= link_to "Compare travel options for your next destination", :action => "start" %>
 <p>
 <%= link_to "About Us", :action => "about" %>
+

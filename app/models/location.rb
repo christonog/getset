@@ -50,7 +50,11 @@ class Location < ActiveRecord::Base
   
   def get_kayak_feed()
      feed = FeedNormalizer::FeedNormalizer.parse open("http://www.kayak.com/h/rss/fare?code=#{origin_iata_code}&dest=#{destination_iata_code}&tm=#{kayak_feed_date}")
-     feed.entries.first.title
+     if feed.entries.first.title == nil
+       "Sorry, nothing available at this time."
+     else
+       feed.entries.first.title
+     end
   end
   
 IATA_CITY_CODE_MAPPING = { "Atlanta, GA" => "ATL",
@@ -110,7 +114,7 @@ IATA_CITY_CODE_MAPPING = { "Atlanta, GA" => "ATL",
 # This is to get the bus cost
 # parameters for the url string interpolation
 
-T = 8.hours.from_now
+T = 1.day.from_now
 
 
   def dYear
@@ -171,13 +175,13 @@ T = 8.hours.from_now
   # Need to format the views to match the right formatting in the url
 
   def get_bus_cost()
-   doc = open("https://www.greyhound.com/farefinder/step2.aspx?Redirect=Y&Version=1.0&OriginID=340660&OriginCity=#{busOriginCity}&OriginState=#{busOriginState}&DestinationID=151239&DestinationCity=#{busDestinationCity}&DestinationState=#{busDestinationState}&Children=0&Legs=1&Adults=1&Seniors=0&DYear=#{dYear}&DMonth=#{dMonth}&DDay=#{dDay}&DHr=&RYear=#{rYear}&RMonth=#{rMonth}&RDay=#{rDay}&RHr=") { |f| Hpricot(f) }
-   bus_price = doc.at("#ctl00_ContentHolder_DepartureGrid_ctl00__2 :nth-child(5)").to_plain_text[/\$[0-9\.]+/]
+   doc = open("https://www.greyhound.com/farefinder/step2.aspx?Redirect=Y&Version=1.0&OriginID=680780&OriginCity=#{busOriginCity}&OriginState=#{busOriginState}&DestinationID=320012&DestinationCity=#{busDestinationCity}&DestinationState=#{busDestinationState}&Children=0&Legs=2&Adults=1&Seniors=0&DYear=#{dYear}&DMonth=#{dMonth}&DDay=#{dDay}&DHr=&RYear=#{rYear}&RMonth=#{rMonth}&RDay=#{rDay}&RHr=") { |f| Hpricot(f) }
+   bus_price = doc.at("#ctl00_ContentHolder_DepartureGrid_ctl00__0 :nth-child(5)").to_plain_text[/\$[0-9\.]+/]
     if bus_price == nil
       "Sorry, nothing available at this time."
     else
       bus_price
     end  
-  end
+  end  
 end
 
