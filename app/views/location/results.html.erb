@@ -1,21 +1,16 @@
 
 <h1> Here's a cost comparison of travel methods from <%= @location.city_from %> to <%= @location.city_to %> </h1>
-
+<h3> All prices round trip.</h3>
 <p>
 <p>
 <p>
-<h2> Cost to Drive: </h2>
-<h3>One Way:</h3>
-<p><%= number_to_currency(@location.fixed_car_gas_cost) %> for gas.</p>
+<h2> Driving Cost: </h2>
 <p>
-<p>
-<h3>Round Trip: </h3>
-<%= number_to_currency(@location.fixed_car_round_trip) %>
+<p><%= number_to_currency(@location.fixed_car_round_trip) %> for gas. </p>
 <p>
 <p>
 <p> 
-<h2> Cost to Fly: </h2>
-<h3> Round Trip </h3>
+<h2> Flight Cost: </h2>
 <%= @location.get_kayak_feed %>
 <p>
 <p>
@@ -27,6 +22,5 @@
 <%= @time %> to <%= @future_time %>
 
 <p><%= link_to "Compare travel options for your next destination", :action => "start" %>
-<p>
-<%= link_to "About Us", :action => "about" %>
+
 

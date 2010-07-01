@@ -1,12 +1,8 @@
-<h2> Find the Cheapest Way to Get Where you need to go by:</h2>
-<h2><ul>
-<li> Calculating the gas cost of your drive </li>
-<li> Showing the cheapest flight to your destination </li>
-<li> Comparing the two costs to help you decide how to get where you need to go </li>
-</ul> </h2>
+<h1> Discover the <em>cheapest</em> method of travel. </h1>
+
 <% semantic_form_for :location, @location, :url => {:action => "results"} do |f| %>
   <%= f.error_messages %>
-<%= f.label :city_to, "Where do you want to go?" %>
+<b><%= f.label :city_to, "Where do you want to go?" %></b>
 <p>
 <%= f.input :city_to, :wrapper_html => { :style => "display:;" }, :as => :select, :collection => ["Atlanta, GA",
                                                       "Anchorage, AL",
@@ -61,7 +57,7 @@
                                                       "Washington, DC - IAD",
                                                       "Washington, DC - DCA" ] %>                                                  
 <p>
-<%= f.label :city_from, "Where are you coming from?" %>
+<b><%= f.label :city_from, "Where are you coming from?" %></b>
 <p>
 <%= f.input :city_from, :wrapper_html => { :style => "display:inherit;" }, :as => :select, :collection => ["Atlanta, GA",
                                                       "Anchorage, AL",
@@ -121,4 +117,3 @@
 
 <% end %>
 <p>
-<%= link_to "About Us", :action => "about" %>

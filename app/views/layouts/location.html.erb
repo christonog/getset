@@ -13,9 +13,8 @@
 	<%= link_to(image_tag("getset-logo-final-72-dpi.jpg", :border => 0), {:controller => "location", :action => "start"}) %>
 			<%= yield :layout %>
 <p>
-
+<%= link_to "About", :action => "about" %>
 <p> Like our tool? Help us make it better by <%= link_to "<b> Sending Us Feedback </b>", contact_path %> </p>
-<p> Check us out on our <a href="/blog">blog.</a>
 
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
