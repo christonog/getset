@@ -1,3 +1,22 @@
+# == Schema Information
+# Schema version: 20100508170842
+#
+# Table name: locations
+#
+#  id           :integer         not null, primary key
+#  city_to      :string(255)
+#  city_from    :string(255)
+#  created_at   :datetime
+#  updated_at   :datetime
+#  gas_mileage  :float
+#  gas_price    :float
+#  name         :string(255)
+#  summary      :text
+#  url          :string(255)
+#  published_at :datetime
+#  guid         :string(255)
+#
+
 class Location < ActiveRecord::Base
   # validates_presence_of :city_to, :city_from, :gas_mileage, :gas_price
   
