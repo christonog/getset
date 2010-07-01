@@ -194,7 +194,7 @@ T = 1.day.from_now
   # Need to format the views to match the right formatting in the url
 
   def get_bus_cost()
-   doc = open("https://www.greyhound.com/farefinder/step2.aspx?Redirect=Y&Version=1.0&OriginID=680780&OriginCity=#{busOriginCity}&OriginState=#{busOriginState}&DestinationID=320012&DestinationCity=#{busDestinationCity}&DestinationState=#{busDestinationState}&Children=0&Legs=2&Adults=1&Seniors=0&DYear=#{dYear}&DMonth=#{dMonth}&DDay=#{dDay}&DHr=&RYear=#{rYear}&RMonth=#{rMonth}&RDay=#{rDay}&RHr=") { |f| Hpricot(f) }
+   doc = open("https://www.greyhound.com/farefinder/step2.aspx?Redirect=Y&Version=1.0&OriginCity=#{busOriginCity}&OriginState=#{busOriginState}&DestinationCity=#{busDestinationCity}&DestinationState=#{busDestinationState}&Children=0&Legs=2&Adults=1&Seniors=0&DYear=#{dYear}&DMonth=#{dMonth}&DDay=#{dDay}&DHr=&RYear=#{rYear}&RMonth=#{rMonth}&RDay=#{rDay}&RHr=") { |f| Hpricot(f) }
    bus_price = doc.at("#ctl00_ContentHolder_DepartureGrid_ctl00__0 :nth-child(5)").to_plain_text[/\$[0-9\.]+/]
     if bus_price == nil
       "Sorry, nothing available at this time."
