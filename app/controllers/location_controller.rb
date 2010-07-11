@@ -17,21 +17,6 @@ class LocationController < ApplicationController
     @title = "flight, car, and bus travel cost comparison from #{@location.city_from} to #{@location.city_to}"
     @time = 1.day.from_now.strftime("%m/%d/%Y")
     @future_time = 7.days.from_now.strftime("%m/%d/%Y")  
-    
-    
-    # respond_to do |format|
-      #  if @location.save
-        #  if @location.exists?
-        #   @location = Location.find(:params[:id])
-
-         #  format.html { redirect_to(@location) } #Need to have logic where the object isn't saved, but found
-          # format.xml  { render :xml => @location, :status => :created, :location => @location }
-
-       # else
-       #   format.html { render :action => "start" }
-      #    format.xml  { render :xml => @location.errors, :status => :unprocessable_entity }
-      #  end
-     # end
   end
   
   #might have to add a new action here to retrieve items already saved in the db.
