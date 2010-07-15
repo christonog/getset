@@ -1,0 +1,183 @@
+body {
+	font: normal 12px/15px arial;
+	color: #45484d;
+}
+img {
+	border: 0;
+}
+a {
+	font: normal 12px/15px arial;
+	color: #45484d;
+	text-decoration: underline;
+}
+a:hover {
+	font: normal 12px/15px arial;
+	color: #000;
+	text-decoration: none;
+}
+h1 {
+	font: normal 14px/17px arial;
+	color: #45484d;
+	padding: 0 10px 0 0;
+	margin: 5px 0 10px 0;
+	text-align: left;
+}
+p {
+	text-align: left;
+	font: normal 12px/20px arial;
+	color: #45484d;
+	padding: 0 10px 0 0;
+}
+.htitle {
+	font: bold 28px/28px arial;
+	color: #fff;
+}
+.title {
+	font: bold 18px/21px arial;
+	color: #7f8185;
+	margin: 0;
+	padding: 0;
+}
+.title-red {
+	font: bold 18px/21px arial;
+	color: #ee3124;
+	margin: 0;
+	padding: 0;
+}
+.title-yellow {
+	font: bold 18px/21px arial;
+	color: #e87e0c;
+	margin: 0;
+	padding: 0;
+}
+.title-green {
+	font: bold 18px/21px arial;
+	color: #34982c;
+	margin: 0;
+	padding: 0;
+}
+.subtitle-green {
+	font: bold 14px/17px arial;
+	color: #34982c;
+	margin: 0;
+	padding: 0;
+}
+.subtitle {
+	font: bold 14px/17px arial;
+	color: #7f8185;
+	margin: 0;
+	padding: 0;
+}
+.subtitle2 {
+	font: normal 12px/15px arial;
+	color: #000;
+	margin: 0;
+	padding: 0;
+}
+.note {
+	font: normal 11px/13px arial;
+	color: #45484d;
+	margin: 0;
+	padding: 0;
+}
+.logo {
+	margin-top: 25px;
+}
+.icn {
+	margin-bottom: 3px;
+}
+
+#header {
+	font: normal 22px/25px arial;
+	color: #fff;
+}
+#topdiv {
+	font: bold 18px/21px arial;
+	color: #a2a3a6;
+	padding-top: 15px;
+}
+#topdiv a.big {
+	font: bold 18px/21px arial;
+	color: #a2a3a6;
+	text-decoration: none;
+}
+#topdiv a.big:hover {
+	font: bold 18px/21px arial;
+	color: #a2a3a6;
+	text-decoration: underline;
+}
+#topdiv2 {
+	font: bold 14px/17px arial;
+	color: #45484d;
+}
+#content {
+	font: bold 18px/21px arial;
+	color: #a2a3a6;
+}
+.content-tab {
+	padding-right: 135px;
+}
+.textbox {
+	width: 154px;
+	font: normal 12px/15px arial;
+	color: #45484d;
+}
+
+
+div#reqInfo {
+	font: normal 14px arial;
+	color: #45484d;
+	text-align: center;
+}
+div#reqInfo .inp {
+	font: normal 14px arial;
+	color: #45484d;
+	background: transparent url(/images/textbox-bg.gif) repeat-x top left;
+	padding: 3px;
+	margin: 8px 0;
+	border: 1px solid #a8acad;
+	width: 214px;
+}
+div#reqInfo textarea {
+	overflow: auto;
+	height: 166px;
+	font: normal 14px arial;
+	color: #45484d;
+	padding: 3px;
+	margin: 10px 0;
+	border: 1px solid #a8acad;
+	width: 353px;
+}
+
+.footer {
+	font: normal 11px/20px arial;
+	color: #818285;
+}
+.footer a {
+	font: normal 11px/13px arial;
+	color: #818285;
+	text-decoration: none;
+}
+.footer a:hover {
+	font: normal 11px/13px arial;
+	color: #818285;
+	text-decoration: underline;
+}
+ul#footer-menu {
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	text-align: center;
+}
+ul#footer-menu li {
+	display: inline;
+	margin: 0;
+	padding: 0 10px 0 6px;
+	border-right: 1px solid #000;
+}
+ul#footer-menu li:last-child {
+	border-right: none;
+}
+ul#footer-menu li a{
+	color: #000;
+	text-decoration: underline;
+}

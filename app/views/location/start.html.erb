@@ -1,121 +1,160 @@
-<h1> Discover the <em>cheapest</em> method of travel. </h1>
+<div class="wrapper">
+	<div id="top-wrap">
+		<div id="top"><%= link_to(image_tag("logo.png", :border => 0, :size => "188x141", :class => "logo"), {:controller => "location", :action => "start"}, :alt => "Discover the cheapest method of travel with Getset") %></div>
+	</div>
 
-<% semantic_form_for :location, @location, :url => {:action => "results"} do |f| %>
-  <%= f.error_messages %>
-<b><%= f.label :city_to, "Where do you want to go?" %></b>
-<p>
-<%= f.input :city_to, :wrapper_html => { :style => "display:;" }, :as => :select, :collection => ["Atlanta, GA",
-                                                      "Anchorage, AL",
-                                                      "Austin, TX",
-                                                      "Baltimore, MD",
-                                                      "Boston, MA",
-                                                      "Charlotte, NC",
-                                                      "Chicago, IL - MDW",
-                                                      "Chicago, IL - ORD",
-                                                      "Cincinnati, OH", 
-                                                      "Cleveland, OH",
-                                                      "Columbus, OH",
-                                                      "Colorado Springs, CO",
-                                                      "Dallas, TX",
-                                                      "Denver, CO",
-                                                      "Detroit, MI",
-                                                      "Fort Lauderdale, FL",
-                                                      "Fort Meyers, FL",
-                                                      "Hartford, CT",
-                                                      "Houston, TX - IAH",
-                                                      "Houston, TX - HOU",
-                                                      "Indianapolis, IN",
-                                                      "Kansas City, MO",
-                                                      "Las Vegas, NV", 
-                                                      "Los Angeles, CA",                                                                                                            
-                                                      "Memphis, TN",
-                                                      "Miami, FL",
-                                                      "Minneapolis, MN",
-                                                      "Nashville, TN",
-                                                      "New Orleans, LA",
-                                                      "New York, NY - JFK", 
-                                                      "New York, NY - LGA",
-                                                      "Newark, NJ",
-                                                      "Oakland, CA",                                                      
-                                                      "Ontario, CA",
-                                                      "Omaha, NE",
-                                                      "Orlando, CA",
-                                                      "Philadelphia, PA",
-                                                      "Phoenix, AZ",
-                                                      "Pittsburgh, PA",
-                                                      "Portland, OR",
-                                                      "Raleigh, NC",
-                                                      "Sacramento, CA",
-                                                      "Salt Lake City, UT",
-                                                      "San Antonio, TX",
-                                                      "San Diego, CA",
-                                                      "San Francisco, CA",
-                                                      "San Jose, CA",
-                                                      "Santa Ana, CA",
-                                                      "Seattle, WA",
-                                                      "St Louis, MO",
-                                                      "Tampa, FL",
-                                                      "Washington, DC - IAD",
-                                                      "Washington, DC - DCA" ] %>                                                  
-<p>
-<b><%= f.label :city_from, "Where are you coming from?" %></b>
-<p>
-<%= f.input :city_from, :wrapper_html => { :style => "display:inherit;" }, :as => :select, :collection => ["Atlanta, GA",
-                                                      "Anchorage, AL",
-                                                      "Austin, TX",
-                                                      "Baltimore, MD",
-                                                      "Boston, MA",
-                                                      "Charlotte, NC",
-                                                      "Chicago, IL - MDW",
-                                                      "Chicago, IL - ORD",
-                                                      "Cincinnati, OH", 
-                                                      "Cleveland, OH",
-                                                      "Columbus, OH",
-                                                      "Colorado Springs, CO",
-                                                      "Dallas, TX",
-                                                      "Denver, CO",
-                                                      "Detroit, MI",
-                                                      "Fort Lauderdale, FL",
-                                                      "Fort Meyers, FL",
-                                                      "Hartford, CT",
-                                                      "Houston, TX - IAH",
-                                                      "Houston, TX - HOU",
-                                                      "Indianapolis, IN",
-                                                      "Kansas City, MO",
-                                                      "Las Vegas, NV", 
-                                                      "Los Angeles, CA",                                                                                                            
-                                                      "Memphis, TN",
-                                                      "Miami, FL",
-                                                      "Minneapolis, MN",
-                                                      "Nashville, TN",
-                                                      "New Orleans, LA",
-                                                      "New York, NY - JFK", 
-                                                      "New York, NY - LGA",
-                                                      "Newark, NJ",
-                                                      "Oakland, CA",                                                      
-                                                      "Ontario, CA",
-                                                      "Omaha, NE",
-                                                      "Orlando, CA",
-                                                      "Philadelphia, PA",
-                                                      "Phoenix, AZ",
-                                                      "Pittsburgh, PA",
-                                                      "Portland, OR",
-                                                      "Raleigh, NC",
-                                                      "Sacramento, CA",
-                                                      "Salt Lake City, UT",
-                                                      "San Antonio, TX",
-                                                      "San Diego, CA",
-                                                      "San Francisco, CA",
-                                                      "San Jose, CA",
-                                                      "Santa Ana, CA",
-                                                      "Seattle, WA",
-                                                      "St Louis, MO",
-                                                      "Tampa, FL",
-                                                      "Washington, DC - IAD",
-                                                      "Washington, DC - DCA" ] %>
+	<div id="header-wrap">
+		<div id="header">discover the <span class="htitle">cheapest</span> method of travel</div>
+	</div>
+	<div id="topdiv-wrap">
+		<div id="topdiv">
+			compare cost of:<br /><br />
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td align="right" valign="top"><%= image_tag("icn-plane.png", :border => 0, :size => "55x54", :class => "icn")%><br />flying&nbsp;</td>
+				<td align="center" valign="top"><%= image_tag("icn-car.png", :border => 0, :size => "55x54", :class => "icn")%><br />driving</td>
+				<td align="left" valign="top"><%= image_tag("icn-bus.png", :border => 0, :size => "55x54", :class => "icn")%><br />&nbsp;&nbsp;bus</td>
+			</tr>
+			</table>
+		</div>
+	</div>
+<div id="content-wrap">
+	<div id="content">
+	<br />
+		<table width="100%" border="0" cellpadding="0" cellspacing="8">
+		<tr>
+		<% semantic_form_for :location, @location, :url => {:action => "results"} do |f| %>
+      <%= f.error_messages %>
+			<td align="center" valign="top"></td>
+			<td align="center" valign="top">
+			<b><%= f.label :city_to, "Where do you want to go?" %></b>
+				<%= f.input :city_to, :wrapper_html => { :style => "display:inherit;" }, :as => :select, :collection => ["Atlanta, GA",
+                                                              "Anchorage, AL",
+                                                              "Austin, TX",
+                                                              "Baltimore, MD",
+                                                              "Boston, MA",
+                                                              "Charlotte, NC",
+                                                              "Chicago, IL - MDW",
+                                                              "Chicago, IL - ORD",
+                                                              "Cincinnati, OH", 
+                                                              "Cleveland, OH",
+                                                              "Columbus, OH",
+                                                              "Colorado Springs, CO",
+                                                              "Dallas, TX",
+                                                              "Denver, CO",
+                                                              "Detroit, MI",
+                                                              "Fayetteville, NC",
+                                                              "Fort Lauderdale, FL",
+                                                              "Fort Meyers, FL",
+                                                              "Greensboro, NC",
+                                                              "Hartford, CT",
+                                                              "Houston, TX - IAH",
+                                                              "Houston, TX - HOU",
+                                                              "Indianapolis, IN",
+                                                              "Kansas City, MO",
+                                                              "Las Vegas, NV", 
+                                                              "Los Angeles, CA",                                                                                                            
+                                                              "Memphis, TN",
+                                                              "Miami, FL",
+                                                              "Minneapolis, MN",
+                                                              "Nashville, TN",
+                                                              "New Orleans, LA",
+                                                              "New York, NY - JFK", 
+                                                              "New York, NY - LGA",
+                                                              "Newark, NJ",
+                                                              "Oakland, CA",                                                      
+                                                              "Ontario, CA",
+                                                              "Omaha, NE",
+                                                              "Orlando, CA",
+                                                              "Philadelphia, PA",
+                                                              "Phoenix, AZ",
+                                                              "Pittsburgh, PA",
+                                                              "Portland, OR",
+                                                              "Raleigh, NC",
+                                                              "Sacramento, CA",
+                                                              "Salt Lake City, UT",
+                                                              "San Antonio, TX",
+                                                              "San Diego, CA",
+                                                              "San Francisco, CA",
+                                                              "San Jose, CA",
+                                                              "Santa Ana, CA",
+                                                              "Seattle, WA",
+                                                              "St Louis, MO",
+                                                              "Tampa, FL",
+                                                              "Washington, DC - IAD",
+                                                              "Washington, DC - DCA" ] %>
+        
+			</td>
+		</tr>
+		<tr>
+			<td align="center" valign="top"></td>
+			<td align="center" valign="top">
+			<%= f.label :city_from, "Where are you coming from?" %></b>
+				<%= f.input :city_from, :wrapper_html => { :style => "display:inherit;" }, :as => :select, :collection => ["Atlanta, GA",
+                                                              "Anchorage, AL",
+                                                              "Austin, TX",
+                                                              "Baltimore, MD",
+                                                              "Boston, MA",
+                                                              "Charlotte, NC",
+                                                              "Chicago, IL - MDW",
+                                                              "Chicago, IL - ORD",
+                                                              "Cincinnati, OH", 
+                                                              "Cleveland, OH",
+                                                              "Columbus, OH",
+                                                              "Colorado Springs, CO",
+                                                              "Dallas, TX",
+                                                              "Denver, CO",
+                                                              "Detroit, MI",
+                                                              "Fayetteville, NC",
+                                                              "Fort Lauderdale, FL",
+                                                              "Fort Meyers, FL",
+                                                              "Greensboro, NC",
+                                                              "Hartford, CT",
+                                                              "Houston, TX - IAH",
+                                                              "Houston, TX - HOU",
+                                                              "Indianapolis, IN",
+                                                              "Kansas City, MO",
+                                                              "Las Vegas, NV", 
+                                                              "Los Angeles, CA",                                                                                                            
+                                                              "Memphis, TN",
+                                                              "Miami, FL",
+                                                              "Minneapolis, MN",
+                                                              "Nashville, TN",
+                                                              "New Orleans, LA",
+                                                              "New York, NY - JFK", 
+                                                              "New York, NY - LGA",
+                                                              "Newark, NJ",
+                                                              "Oakland, CA",                                                      
+                                                              "Ontario, CA",
+                                                              "Omaha, NE",
+                                                              "Orlando, CA",
+                                                              "Philadelphia, PA",
+                                                              "Phoenix, AZ",
+                                                              "Pittsburgh, PA",
+                                                              "Portland, OR",
+                                                              "Raleigh, NC",
+                                                              "Sacramento, CA",
+                                                              "Salt Lake City, UT",
+                                                              "San Antonio, TX",
+                                                              "San Diego, CA",
+                                                              "San Francisco, CA",
+                                                              "San Jose, CA",
+                                                              "Santa Ana, CA",
+                                                              "Seattle, WA",
+                                                              "St Louis, MO",
+                                                              "Tampa, FL",
+                                                              "Washington, DC - IAD",
+                                                              "Washington, DC - DCA" ] %>
+        
+			</td>
+		</tr>
+		<tr>
+			<td align="center" valign="top">&nbsp;</td>
+			<td align="center" valign="top"><%= image_submit_tag("btn-go.png") %></td>
+		</tr>
+		<% end %>
+		</table>
+	</div>
+</div>
 
-<p>
-<%= submit_tag "Go" %>
 
-<% end %>
-<p>

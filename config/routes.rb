@@ -11,6 +11,8 @@ ActionController::Routing::Routes.draw do |map|
       :conditions => { :method => :post }
   end
   map.about_us '/about', :controller => "location", :action => "about"
+  map.faq '/faq', :controller => "location", :action => "faq"
+  
   
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -52,4 +54,6 @@ ActionController::Routing::Routes.draw do |map|
   # consider removing or commenting them out if you're using named routes and resources.
   map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
+  map.sitemap 'sitemap.xml', :controller => 'sitemap'
+  
 end

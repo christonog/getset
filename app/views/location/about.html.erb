@@ -1,8 +1,24 @@
-<h2> About us </h2>
-<h3> Discover the cheapest method of travel. </h3>
-<p> Getset is an online tool that helps you decide which travel method to use to get to where you need to go </p>
-<p> Just enter where you want to go and where you're coming from, and Getset will handle the rest. </p>
-<p> Instant travel price information on driving, flight, and bus costs. </p>
-<p> It's that easy. </p>
-<p>
-<p> Calculate the gas cost of your next trip <%= link_to "<b>now!</b>", :action => "start" %> </p>
+<div class="wrapper">
+	<div id="top-wrap">
+		<div id="top"><%= link_to(image_tag("logo.png", :border => 0, :size => "188x141", :class => "logo"), {:controller => "location", :action => "start"}, :alt => "Discover the cheapest method of travel with Getset") %></div>
+	</div>
+
+	<div id="header-wrap">
+		<div id="header"><span class="htitle">About Us</span></div>
+	</div>
+
+	<div id="content-wrap">
+		<div id="content">
+		<br /><br />
+			<h1>Discover the cheapest method of travel.</h1>
+			<p>
+			Getset is an online tool that helps you decide which travel method to use to get to where you need to go.
+			</p><p>
+      Just enter where you want to go and where you're coming from, and Getset will handle the rest.			</p><p>
+			<b>Instant travel price information on driving, flight, and bus costs. </b></p>
+			<p>
+      It's that easy.	Calculate the gas cost of your next trip <%= link_to "<b>now!</b>", :action => "start" %>	</div>
+	</div>
+
+	<div class="push"></div>
+</div>

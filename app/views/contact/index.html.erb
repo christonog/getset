@@ -1,29 +1,28 @@
-<h1> Contact Us <h1>
+<div class="wrapper">
+	<div id="top-wrap">
+		<div id="top"><%= link_to(image_tag("logo.png", :border => 0, :size => "188x141", :class => "logo"), {:controller => "location", :action => "start"}, :alt => "Discover the cheapest method of travel with Getset") %></div>
+	</div>
 
-<p> Got a question? Want to submit feedback? Or just say hello?</p>
+	<div id="header-wrap">
+		<div id="header"><span class="htitle">Contact Us</span></div>
+	</div>
 
-<% form_for(:contact, :url => contact_path) do |form| %>
-  <p>
-    <%= form.label :subject %><br />
-    <%= form.text_field :subject %>
-  </p>
+	<div id="content-wrap">
+		<div id="content">
+		<br />
+			<div id="reqInfo"></ br>
+			<% form_for(:contact, :url => contact_path) do |form| %>
+           <%= form.text_field :name, :type => "text", :id => "name", :class => "inp", :value => "Name", :onclick => "if(this.value=='Name')this.value=''", :onblur => "if(this.value=='')this.value='Name'" %><br />
+           <%= form.text_field :email, :type => "text", :id => "email", :class => "inp", :value => "Email", :onclick => "if(this.value=='Email')this.value=''", :onblur => "if(this.value=='')this.value='Email'" %><br />
+           <%= form.text_field :subject, :type => "text", :id => "subject", :class => "inp", :value => "Subject", :onclick => "if(this.value=='Subject')this.value=''", :onblur => "if(this.value=='')this.value='Subject'" %><br />
+           <%= form.text_area :body, :id => "message", :name => "message", :value => "Message", :onclick => "if(this.value=='Message')this.value=''", :onblur => "if(this.value=='')this.value='Message'" %><br /   >
+           <%= form.submit "Send" %></ br>
+        <% end %>
+				 
+				<br /><br /><br /><br /><br />
+			</div>
+		</div>
+	</div>
 
-  <p>
-    <%= form.label :name %><br />
-    <%= form.text_field :name %>
-  </p>
-
-  <p>
-    <%= form.label :email %><br />
-    <%= form.text_field :email %>
-  </p>
-
-  <p>
-    <%= form.label :body %><br />
-    <%= form.text_area :body,:size => "40x15" %>
-  </p>
-
-  <p>
-    <%= form.submit "Send" %>
-  </p>
-<% end %>
+	<div class="push"></div>
+</div>

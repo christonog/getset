@@ -66,7 +66,7 @@ class Location < ActiveRecord::Base
     t = Time.now
     t.strftime("%m%Y")
   end
-  
+
   def get_kayak_feed()
      feed = FeedNormalizer::FeedNormalizer.parse open("http://www.kayak.com/h/rss/fare?code=#{origin_iata_code}&dest=#{destination_iata_code}&tm=#{kayak_feed_date}")
      if feed.entries.first.title == nil
@@ -75,7 +75,7 @@ class Location < ActiveRecord::Base
        feed.entries.first.title
      end
   end
-  
+ 
 IATA_CITY_CODE_MAPPING = { "Atlanta, GA" => "ATL",
                         "Anchorage, AL" => "ANC",
                         "Austin, TX" => "AUS",
@@ -202,6 +202,6 @@ T = 1.day.from_now
     else
       bus_price
     end  
-  end  
+  end 
 end
 

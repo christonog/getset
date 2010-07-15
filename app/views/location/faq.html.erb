@@ -1,0 +1,20 @@
+<div class="wrapper">
+	<div id="top-wrap">
+		<div id="top"><%= link_to(image_tag("logo.png", :border => 0, :size => "188x141", :class => "logo"), {:controller => "location", :action => "start"}, :alt => "Discover the cheapest method of travel with Getset") %></a></div>
+	</div>
+
+	<div id="header-wrap">
+		<div id="header"><span class="htitle">Frequently Asked Questions</span></div>
+	</div>
+
+	<div id="content-wrap">
+		<div id="content">
+		<br /><br />
+			<h1><b>How do you calculate the prices?</b></h1>
+			<p>We get the distance from your origin city to your destination with Google maps, the gas mileage and price per gallon numbers via the <%= link_to "fuel gauge report", "http://www.fuelgaugereport.com/" %>.</p>
+			<p>Airline prices are provided via Kayak, and bus prices from Greyhound. </p>
+		</div>
+	</div>
+
+	<div class="push"></div>
+</div>

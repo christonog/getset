@@ -1,21 +1,34 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-    <meta name="google-site-verification" content="panm4pQbQSLqyZwgzbL1ClHfm3xM9lhx97Hmz0UMnSY" />
-    <title><%= @title %></title>
-    <meta name="Description" content=<%= @meta_description %>>
-		<%= stylesheet_link_tag "scaffold", :media => "all" %>
-		<%= javascript_include_tag :defaults %>
-		<%= calendar_date_select_includes "nil" %> 
+	<meta name="google-site-verification" content="panm4pQbQSLqyZwgzbL1ClHfm3xM9lhx97Hmz0UMnSY" />
+  <title><%= @title %></title>
+  <meta name="Description" content=<%= @meta_description %>>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Getset" />
+	<meta name="description" content="Getset" />
+  <%= stylesheet_link_tag "layout", :media => "all" %>
+  <%= stylesheet_link_tag "style", :media => "all" %>
+	<%= javascript_include_tag :defaults %>
+	<%= calendar_date_select_includes "nil" %>
 </head>
 
 <body>
-<%= link_to(image_tag("getset-logo-final-72-dpi.jpg", :border => 0), {:controller => "location", :action => "start"}) %>
-		<%= yield :layout %>
 
-<p>
+    <%= yield :layout %>
 
-
+<div class="footer-wrap">
+	<div class="footer">
+		<ul id="footer-menu">
+			<li><%= link_to "About", :controller => "location", :action => "about" %></li>
+			<li><%= link_to "Contact & Feedback", :controller => "contact", :action => "index" %></li>
+			<li><%= link_to "FAQ", :controller => "location", :action => "faq" %></li>
+			<li><%= link_to "Terms & Privacy", :controller => "location", :action => "terms_privacy" %></li>
+			<li><%= image_tag("twitter_logo.png", :border => 0, :size => "25x25") %> Follow us on <%= link_to "Twitter", "http://twitter.com/getsetapp" %></li>
+		</ul>
+		Copyright &copy; 2010 Getset. All rights reserved.<br />
+	</div>
+</div>
 <script type="text/javascript">
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
 document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -25,6 +38,5 @@ try {
 var pageTracker = _gat._getTracker("UA-11727785-1");
 pageTracker._trackPageview();
 } catch(err) {}</script>
-
 </body>
 </html>

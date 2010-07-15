@@ -1,2 +1,6 @@
 RailsBaseURI /
 PassengerAppRoot /home/getsetap/getset/current
+
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^getsetapp\.com [NC]
+RewriteRule (.*) http://www.getsetapp.com/$1 [L,R=301]

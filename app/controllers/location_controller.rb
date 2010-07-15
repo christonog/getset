@@ -24,5 +24,13 @@ class LocationController < ApplicationController
   def about
     @title = "About Us | Getset"
   end
+  
+  def faq
+    @title = "Frequently Asked Questions | Getset"
+  end
+  
+  def terms_privacy
+    @title = "Terms and Privacy"
+  end
 
 end
