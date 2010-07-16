@@ -91,7 +91,7 @@ IATA_CITY_CODE_MAPPING = { "Atlanta, GA" => "ATL",
                         "Dallas, TX" => "DFW",
                         "Denver, CO" => "DEN",
                         "Detroit, MI" => "DTW",
-                        "Fayetteville, NC" => "FAY"
+                        "Fayetteville, NC" => "FAY",
                         "Fort Lauderdale, FL" => "FLL",
                         "Fort Meyers, FL" => "RSW",
                         "Greensboro, NC" => "GSO",
