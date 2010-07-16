@@ -15,14 +15,13 @@
            <%= form.text_field :name, :type => "text", :id => "name", :class => "inp", :value => "Name", :onclick => "if(this.value=='Name')this.value=''", :onblur => "if(this.value=='')this.value='Name'" %><br />
            <%= form.text_field :email, :type => "text", :id => "email", :class => "inp", :value => "Email", :onclick => "if(this.value=='Email')this.value=''", :onblur => "if(this.value=='')this.value='Email'" %><br />
            <%= form.text_field :subject, :type => "text", :id => "subject", :class => "inp", :value => "Subject", :onclick => "if(this.value=='Subject')this.value=''", :onblur => "if(this.value=='')this.value='Subject'" %><br />
-           <%= form.text_area :body, :id => "message", :name => "message", :value => "Message", :onclick => "if(this.value=='Message')this.value=''", :onblur => "if(this.value=='')this.value='Message'" %><br /   >
-           <%= form.submit "Send" %></ br>
+           <%= form.text_area :body, :value => "Message", :onclick => "if(this.value=='Message')this.value=''", :onblur => "if(this.value=='')this.value='Message'" %><br /   >
+           <%= image_submit_tag("btn-send.png") %></ br>
         <% end %>
 				 
 				<br /><br /><br /><br /><br />
 			</div>
 		</div>
-	</div>
-
+	</div> 
 	<div class="push"></div>
 </div>
