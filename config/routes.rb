@@ -10,6 +10,8 @@ ActionController::Routing::Routes.draw do |map|
       :action => 'create',
       :conditions => { :method => :post }
   end
+  
+  map.city_results 'travel-cost/:url', :controller => "location", :action => :results
   map.about_us '/about', :controller => "location", :action => "about"
   map.faq '/faq', :controller => "location", :action => "faq"
   map.terms_privacy '/terms-privacy', :controller => "location", :action => "terms_privacy"

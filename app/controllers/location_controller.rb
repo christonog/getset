@@ -9,7 +9,7 @@ class LocationController < ApplicationController
   end
   
   def start
-     @title = "Compare and find flight, car, and bus travel costs | Getset" 
+     @title = "Cost of travel by air, bus, car comparison | Getset" 
   end
 
   def results 

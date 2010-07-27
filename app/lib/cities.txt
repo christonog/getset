@@ -1,0 +1,55 @@
+Atlanta, GA
+Anchorage, AL
+Austin, TX
+Baltimore, MD
+Boston, MA
+Charlotte, NC
+Chicago, IL - MDW
+Chicago, IL - ORD
+Cincinnati, OH 
+Cleveland, OH
+Columbus, OH
+Colorado Springs, CO
+Dallas, TX
+Denver, CO
+Detroit, MI
+Fayetteville, NC
+Fort Lauderdale, FL
+Fort Meyers, FL
+Greensboro, NC
+Hartford, CT
+Houston, TX - IAH
+Houston, TX - HOU
+Indianapolis, IN
+Kansas City, MO
+Las Vegas, NV
+Los Angeles, CA                                                                                                            
+Memphis, TN
+Miami, FL
+Minneapolis, MN
+Nashville, TN
+New Orleans, LA
+New York, NY - JFK 
+New York, NY - LGA
+Newark, NJ
+Oakland, CA                                                      
+Ontario, CA
+Omaha, NE
+Orlando, CA
+Philadelphia, PA
+Phoenix, AZ
+Pittsburgh, PA
+Portland, OR
+Raleigh, NC
+Sacramento, CA
+Salt Lake City, UT
+San Antonio, TX
+San Diego, CA
+San Francisco, CA
+San Jose, CA
+Santa Ana, CA
+Seattle, WA
+St Louis, MO
+Tampa, FL
+Washington, DC - IAD
+Washington, DC - DCA

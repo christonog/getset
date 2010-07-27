@@ -19,7 +19,7 @@
 
 class Location < ActiveRecord::Base
   # validates_presence_of :city_to, :city_from, :gas_mileage, :gas_price
-  
+    
   # validates_numericality_of :gas_mileage, :message => "please enter the number of miles your car gets per gallon (numbers only)."
 
 # These methods are for getting the gas cost - VIA GEOKIT & GOOGLE MAPS
@@ -92,8 +92,8 @@ IATA_CITY_CODE_MAPPING = { "Atlanta, GA" => "ATL",
                         "Denver, CO" => "DEN",
                         "Detroit, MI" => "DTW",
                         "Fayetteville, NC" => "FAY",
-                        "Fort Lauderdale, FL" => "FLL",
-                        "Fort Meyers, FL" => "RSW",
+                        "Ft Lauderdale, FL" => "FLL",
+                        "Ft Meyers, FL" => "RSW",
                         "Greensboro, NC" => "GSO",
                         "Hartford, CT" => "BDL",
                         "Houston, TX - IAH" => "IAH",
@@ -205,5 +205,9 @@ T = 1.day.from_now
       bus_price
     end  
   end 
+  
+ def to_param
+   url "#{id}/travel-cost-to-#{city_to.gsub(/[^a-z0-9]+/i, '-')}-from-#{city_from.gsub(/[^a-z0-9]+/i, '-')}"
+ end
 end
 

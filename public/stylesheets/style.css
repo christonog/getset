@@ -16,12 +16,16 @@ a:hover {
 	text-decoration: none;
 }
 h1 {
-	font: normal 14px/17px arial;
-	color: #45484d;
-	padding: 0 10px 0 0;
-	margin: 5px 0 10px 0;
-	text-align: left;
+	font: normal 22px/25px arial;
+	color: #fff;
 }
+
+h2 {
+	font: bold 18px/21px arial;
+	color: #a2a3a6;
+	padding-top: 15px;	
+}
+
 p {
 	text-align: left;
 	font: normal 12px/20px arial;
@@ -85,6 +89,8 @@ p {
 }
 .icn {
 	margin-bottom: 3px;
+	margin-right: 1px;
+	margin-left: 3px;
 }
 
 #header {
@@ -108,7 +114,7 @@ p {
 }
 #topdiv2 {
 	font: bold 14px/17px arial;
-	color: #45484d;
+	color: #45484d;	
 }
 #content {
 	font: bold 18px/21px arial;
