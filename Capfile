@@ -4,7 +4,8 @@ load 'config/deploy'
 
 after "deploy:update_code", :roles => [:web, :db, :app] do
   run "chown -R #{user}:#{user} /home/#{user}/#{applicationdir}" 
-  run "chmod 755 #{current_path}/public -R" 
+  run "chmod 755 #{current_path}/public -R"
+  run "cd #{current_path} && rake db:migrate RAILS_ENV='production'" 
 end
 
 after "deploy:update", "deploy:cleanup" 

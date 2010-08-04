@@ -34,8 +34,6 @@ html, body {
 	width: 100%;
 	text-align: center;
 	background-color: #989a9d;
-	padding-bottom: 1px;
-	padding-top: 1px;
 }
 #header {
 	width: 710px;
@@ -49,8 +47,6 @@ html, body {
 	width: 100%;
 	text-align: center;
 	background-color: #ececed;
-	padding-bottom: 1px;
-	padding-top: 1px;	
 }
 #topdiv {
 	width: 710px;
