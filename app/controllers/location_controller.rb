@@ -9,7 +9,7 @@ class LocationController < ApplicationController
   end
   
   def start
-     @title = "Cost of travel by air, bus, car comparison | Getset" 
+     @title = "Compare the cost of travel by air, bus, or car | Getset" 
   end
 
   def results 
@@ -30,7 +30,7 @@ class LocationController < ApplicationController
   end
   
   def terms_privacy
-    @title = "Terms and Privacy"
+    @title = "Terms and Privacy | Getset"
   end
 
 end
