@@ -1,6 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
   
   map.resources :locations
+  map.travel_cost '/travel-cost/', :controller => 'location', :action => 'results'
   map.with_options :controller => 'contact' do |contact|
     contact.contact '/contact',
       :action => 'index',
@@ -56,8 +57,8 @@ ActionController::Routing::Routes.draw do |map|
   # Install the default routes as the lowest priority.
   # Note: These default routes make all actions in every controller accessible via GET requests. You should
   # consider removing or commenting them out if you're using named routes and resources.
-  map.connect ':controller/:action/:id'
-  map.connect ':controller/:action/:id.:format'
-  map.sitemap 'sitemap.xml', :controller => 'sitemap'
+  #map.connect ':controller/:action/:id'
+  #map.connect ':controller/:action/:id.:format'
+  #map.sitemap 'sitemap.xml', :controller => 'sitemap'
   
 end

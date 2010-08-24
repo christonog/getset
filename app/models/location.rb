@@ -77,9 +77,10 @@ class Location < ActiveRecord::Base
   end
  
 IATA_CITY_CODE_MAPPING = { "Atlanta, GA" => "ATL",
-                        "Anchorage, AL" => "ANC",
+                        "Anchorage, AK" => "ANC",
                         "Austin, TX" => "AUS",
                         "Baltimore, MD" => "BWI",
+                        "Baton Rouge, LA" => "BTR",
                         "Boston, MA" => "BOS",
                         "Charlotte, NC" => "CLT",
                         "Chicago, IL - MDW" => "MDW",
@@ -100,20 +101,23 @@ IATA_CITY_CODE_MAPPING = { "Atlanta, GA" => "ATL",
                         "Houston, TX - HOU" => "HOU",
                         "Indianapolis, IN" => "IND",
                         "Kansas City, MO" => "MCI",
+                        "Knoxville, TN" => "TYS",
                         "Las Vegas, NV" => "LAS", 
                         "Los Angeles, CA" => "LAX",                                                                                                            
                         "Memphis, TN" => "MEM",
                         "Miami, FL" => "MIA",
+                        "Milwaukee, WI" => "MKE",
                         "Minneapolis, MN" => "MSP",
                         "Nashville, TN" => "BNA",
                         "New Orleans, LA" => "MSY",
                         "New York, NY - JFK" => "JFK", 
                         "New York, NY - LGA" => "LGA",
                         "Newark, NJ" => "EWR",
-                        "Oakland, CA" => "OAK",                                                      
+                        "Oakland, CA" => "OAK",
+                        "Oklahoma City, OK" => "OKC",                                                      
                         "Ontario, CA" => "ONT",
                         "Omaha, NE" => "OMA",
-                        "Orlando, CA" => "MCO",
+                        "Orlando, FL" => "MCO",
                         "Philadelphia, PA" => "PHL",
                         "Phoenix, AZ" => "PHX",
                         "Pittsburgh, PA" => "PIT",
@@ -198,16 +202,16 @@ T = 1.day.from_now
 
   def get_bus_cost()
    doc = open("https://www.greyhound.com/farefinder/step2.aspx?Redirect=Y&Version=1.0&OriginCity=#{busOriginCity}&OriginState=#{busOriginState}&DestinationCity=#{busDestinationCity}&DestinationState=#{busDestinationState}&Children=0&Legs=2&Adults=1&Seniors=0&DYear=#{dYear}&DMonth=#{dMonth}&DDay=#{dDay}&DHr=&RYear=#{rYear}&RMonth=#{rMonth}&RDay=#{rDay}&RHr=") { |f| Hpricot(f) }
-   bus_price = doc.at("#ctl00_ContentHolder_DepartureGrid_ctl00__0 :nth-child(5)").to_plain_text[/\$[0-9\.]+/]
+   bus_price = doc.at("#ctl00_ContentHolder_DepartureGrid_ctl00__0 :nth-child(5)")
     if bus_price == nil
       "Sorry, nothing available at this time."
     else
-      bus_price
+      bus_price.to_plain_text[/\$[0-9\.]+/]
     end  
   end 
   
  def to_param
-   url "#{id}/travel-cost-to-#{city_to.gsub(/[^a-z0-9]+/i, '-')}-from-#{city_from.gsub(/[^a-z0-9]+/i, '-')}"
+   "/#{id}-to-#{city_to.gsub(/[^a-z0-9]+/i, '-')}-from-#{city_from.gsub(/[^a-z0-9]+/i, '-')}"
  end
 end
 
