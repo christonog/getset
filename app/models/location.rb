@@ -38,7 +38,7 @@ class Location < ActiveRecord::Base
   def fixed_car_gas_cost()
     origin = Geokit::Geocoders::GoogleGeocoder.geocode "#{city_to}"
     destination = Geokit::Geocoders::GoogleGeocoder.geocode "#{city_from}"
-    cost = (origin.distance_to(destination) / 25) * 2.73 # as of 5/30/2010 at http://www.fuelgaugereport.com/
+    cost = (origin.distance_to(destination) / 30) * 2.50 # as of 5/30/2010 at http://www.fuelgaugereport.com/
     cost
   end
   
@@ -76,13 +76,21 @@ class Location < ActiveRecord::Base
      end
   end
  
-IATA_CITY_CODE_MAPPING = { "Atlanta, GA" => "ATL",
+IATA_CITY_CODE_MAPPING = { "Albany, NY" => "ALB",
+                        "Albuquerque, NM" => "ABQ",
+                        "Atlanta, GA" => "ATL",
                         "Anchorage, AK" => "ANC",
                         "Austin, TX" => "AUS",
                         "Baltimore, MD" => "BWI",
+                        "Bangor, ME" => "BGR",
                         "Baton Rouge, LA" => "BTR",
+                        "Binghampton, NY" => "BGM",
+                        "Birmingham, AL" => "BHM",
                         "Boston, MA" => "BOS",
+                        "Buffalo, NY" => "BUF",
+                        "Charleston, WV" => "CRW",
                         "Charlotte, NC" => "CLT",
+                        "Chattanooga, TN" => "CHA",
                         "Chicago, IL - MDW" => "MDW",
                         "Chicago, IL - ORD" => "ORD",
                         "Cincinnati, OH" => "CVG", 
@@ -91,19 +99,26 @@ IATA_CITY_CODE_MAPPING = { "Atlanta, GA" => "ATL",
                         "Colorado Springs, CO" => "COS",
                         "Dallas, TX" => "DFW",
                         "Denver, CO" => "DEN",
+                        "Des Moines, IA" => "DSM",
                         "Detroit, MI" => "DTW",
                         "Fayetteville, NC" => "FAY",
                         "Ft Lauderdale, FL" => "FLL",
-                        "Ft Meyers, FL" => "RSW",
+                        "Ft Myers, FL" => "RSW",
+                        "Ft Wayne, IN" => "FWA",
                         "Greensboro, NC" => "GSO",
                         "Hartford, CT" => "BDL",
                         "Houston, TX - IAH" => "IAH",
                         "Houston, TX - HOU" => "HOU",
                         "Indianapolis, IN" => "IND",
+                        "Ithaca, NY" => "ITH",
+                        "Jacksonville, FL" => "JAX",
                         "Kansas City, MO" => "MCI",
+                        "Key West, FL" => "EYW",
                         "Knoxville, TN" => "TYS",
                         "Las Vegas, NV" => "LAS", 
-                        "Los Angeles, CA" => "LAX",                                                                                                            
+                        "Los Angeles, CA" => "LAX",
+                        "Louisville, KY" => "SDF",
+                        "Manchester, NH" => "MHT",                                                                                                            
                         "Memphis, TN" => "MEM",
                         "Miami, FL" => "MIA",
                         "Milwaukee, WI" => "MKE",
@@ -122,7 +137,11 @@ IATA_CITY_CODE_MAPPING = { "Atlanta, GA" => "ATL",
                         "Phoenix, AZ" => "PHX",
                         "Pittsburgh, PA" => "PIT",
                         "Portland, OR" => "PDX",
+                        "Portland, ME" => "PWM",
+                        "Providence, RI" => "PVD",
                         "Raleigh, NC" => "RDU",
+                        "Reno, NV" => "RNO",
+                        "Rochester, NY" => "ROC",
                         "Sacramento, CA" => "SMF",
                         "Salt Lake City, UT" => "SLC",
                         "San Antonio, TX" => "SAT",
@@ -132,9 +151,12 @@ IATA_CITY_CODE_MAPPING = { "Atlanta, GA" => "ATL",
                         "Santa Ana, CA" => "SNA",
                         "Seattle, WA" => "SEA",
                         "St Louis, MO" => "STL",
+                        "Syracuse, NY" => "SYR",
                         "Tampa, FL" => "TPA",
+                        "Tulsa, OK" => "TUL",
                         "Washington, DC - IAD" => "IAD", #need to make sure to change the D.C. to DC to adhere to Greyhound 
-                        "Washington, DC - DCA" => "DCA"}
+                        "Washington, DC - DCA" => "DCA",
+                        "White Plains, NY" => "HPN" }
                         
 # These methods are to interpolate the url string with the parameters from the view
 # This is to get the bus cost
