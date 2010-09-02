@@ -72,16 +72,25 @@ html, body {
 	clear: both;
 	width: 100%;
 	text-align: center;
-
 }
+
+#cantfindcity {
+	padding-left:50px;
+}
+
+#facebooklike {
+	padding-top:10px;
+	padding-left:250px;
+}
+
 #content {
 	width: 710px;
 	margin: 0 auto;
 	text-align: center;
-	padding-bottom: 30px;
+	padding-bottom: 10px;
 }
 .footer-wrap, .push {
-	height: 20px; /* .push must be the same height as .footer */
+	height: 5px; /* .push must be the same height as .footer */
 }
 .footer-wrap {
 	position: relative;
