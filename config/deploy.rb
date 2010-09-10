@@ -18,7 +18,7 @@ set :deploy_to, "/home/#{user}/#{applicationdir}"
 set :group_writable, false
 
 desc "Link in the production database.yml" 
-task :after_update_code do
+task :after_update_code, :roles => [:web, :db, :app] do
   run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml" 
 end
 
