@@ -1,7 +1,12 @@
 ActionController::Routing::Routes.draw do |map|
   
   map.resources :locations
-  map.travel_cost '/travel-cost/', :controller => 'location', :action => 'results'
+
+  map.with_options :controller => 'location', :action => 'results' do |l|
+    l.travel_cost 'travel-cost'
+    l.travel_cost_comparison 'travel-cost-comparison/:location'
+  end
+
   map.with_options :controller => 'contact' do |contact|
     contact.contact '/contact',
       :action => 'index',

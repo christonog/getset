@@ -15,8 +15,14 @@
 </head>
 
 <body>
+<div class="wrapper">
+	<div id="top-wrap">
+		<div id="top"><%= link_to(image_tag("logo.png", :border => 0, :size => "188x141", :class => "logo"), {:controller => "location", :action => "start"}, :alt => "Discover the cheapest method of travel with Getset") %></div>
+ </div>
+ 
  <%= yield :layout %>
-	<div class="push"></div>
+ 
+<div class="push"></div> 
 <div class="footer-wrap">
 	<div class="footer">
 		<ul id="footer-menu">

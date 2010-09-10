@@ -9,11 +9,18 @@ class LocationController < ApplicationController
   end
   
   def start
-     @title = "Compare the cost of travel by air, bus, or car | Getset" 
+     @title = "Compare the cost of travel by air, bus, or car | Getset"
+     @iatas = Iata.all(:select => 'iata_city', :order => 'iata_city ASC').collect(&:iata_city)
   end
 
-  def results 
-    @location = Location.new(params[:location])
+  def results
+    if request.post?
+      p_locations = Iata.locations_to_param(params[:location])
+      redirect_to(travel_cost_comparison_path(p_locations)) && return
+    end
+
+    location_param = Iata.locations_from_param(params[:location])
+    @location = Location.new(location_param)
     @title = "flight, car, and bus travel cost comparison from #{@location.city_from} to #{@location.city_to}"
     @time = 1.day.from_now.strftime("%m/%d/%Y")
     @future_time = 7.days.from_now.strftime("%m/%d/%Y")  
@@ -32,5 +39,4 @@ class LocationController < ApplicationController
   def terms_privacy
     @title = "Terms and Privacy | Getset"
   end
-
 end

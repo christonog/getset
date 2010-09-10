@@ -1,28 +1,9 @@
-# == Schema Information
-# Schema version: 20100508170842
-#
-# Table name: locations
-#
-#  id           :integer         not null, primary key
-#  city_to      :string(255)
-#  city_from    :string(255)
-#  created_at   :datetime
-#  updated_at   :datetime
-#  gas_mileage  :float
-#  gas_price    :float
-#  name         :string(255)
-#  summary      :text
-#  url          :string(255)
-#  published_at :datetime
-#  guid         :string(255)
-#
-
 class Location < ActiveRecord::Base
   # validates_presence_of :city_to, :city_from, :gas_mileage, :gas_price
     
   # validates_numericality_of :gas_mileage, :message => "please enter the number of miles your car gets per gallon (numbers only)."
 
-# These methods are for getting the gas cost - VIA GEOKIT & GOOGLE MAPS
+  # These methods are for getting the gas cost - VIA GEOKIT & GOOGLE MAPS
 
   def car_gas_cost()
     origin = Geokit::Geocoders::GoogleGeocoder.geocode "#{city_to}"
@@ -46,20 +27,16 @@ class Location < ActiveRecord::Base
     fixed_car_gas_cost*2
   end
 
-# These methods are for getting the flight cost - FROM KAYAK
+  # These methods are for getting the flight cost - FROM KAYAK
 
-  def origin_iata_code()
-     if IATA_CITY_CODE_MAPPING.has_key?(city_from)
-       origin_find_code = IATA_CITY_CODE_MAPPING.fetch(city_from) 
-     end
-   origin_find_code
+  def origin_iata_code
+    iata = Iata.find_by_iata_city(city_from)
+    iata.iata_code if iata
   end
 
-  def destination_iata_code()
-    if IATA_CITY_CODE_MAPPING.has_key?(city_to)
-       destination_find_code = IATA_CITY_CODE_MAPPING.fetch(city_to) 
-     end
-   destination_find_code
+  def destination_iata_code
+    iata = Iata.find_by_iata_city(city_to)
+    iata.iata_code if iata
   end
   
   def kayak_feed_date()
@@ -68,101 +45,18 @@ class Location < ActiveRecord::Base
   end
 
   def get_kayak_feed()
-     feed = FeedNormalizer::FeedNormalizer.parse open("http://www.kayak.com/h/rss/fare?code=#{origin_iata_code}&dest=#{destination_iata_code}&tm=#{kayak_feed_date}")
-     if feed.entries.first.title == nil
-       "Sorry, nothing available at this time."
-     else
-       feed.entries.first.title
-     end
+    feed = FeedNormalizer::FeedNormalizer.parse open("http://www.kayak.com/h/rss/fare?code=#{origin_iata_code}&dest=#{destination_iata_code}&tm=#{kayak_feed_date}")
+    if feed.entries.first.title == nil
+      "Sorry, nothing available at this time."
+    else
+      feed.entries.first.title
+    end
   end
- 
-IATA_CITY_CODE_MAPPING = { "Albany, NY" => "ALB",
-                        "Albuquerque, NM" => "ABQ",
-                        "Atlanta, GA" => "ATL",
-                        "Anchorage, AK" => "ANC",
-                        "Austin, TX" => "AUS",
-                        "Baltimore, MD" => "BWI",
-                        "Bangor, ME" => "BGR",
-                        "Baton Rouge, LA" => "BTR",
-                        "Binghampton, NY" => "BGM",
-                        "Birmingham, AL" => "BHM",
-                        "Boston, MA" => "BOS",
-                        "Buffalo, NY" => "BUF",
-                        "Charleston, WV" => "CRW",
-                        "Charlotte, NC" => "CLT",
-                        "Chattanooga, TN" => "CHA",
-                        "Chicago, IL - MDW" => "MDW",
-                        "Chicago, IL - ORD" => "ORD",
-                        "Cincinnati, OH" => "CVG", 
-                        "Cleveland, OH" => "CLE",
-                        "Columbus, OH" => "CMH",
-                        "Colorado Springs, CO" => "COS",
-                        "Dallas, TX" => "DFW",
-                        "Denver, CO" => "DEN",
-                        "Des Moines, IA" => "DSM",
-                        "Detroit, MI" => "DTW",
-                        "Fayetteville, NC" => "FAY",
-                        "Ft Lauderdale, FL" => "FLL",
-                        "Ft Myers, FL" => "RSW",
-                        "Ft Wayne, IN" => "FWA",
-                        "Greensboro, NC" => "GSO",
-                        "Hartford, CT" => "BDL",
-                        "Houston, TX - IAH" => "IAH",
-                        "Houston, TX - HOU" => "HOU",
-                        "Indianapolis, IN" => "IND",
-                        "Ithaca, NY" => "ITH",
-                        "Jacksonville, FL" => "JAX",
-                        "Kansas City, MO" => "MCI",
-                        "Key West, FL" => "EYW",
-                        "Knoxville, TN" => "TYS",
-                        "Las Vegas, NV" => "LAS", 
-                        "Los Angeles, CA" => "LAX",
-                        "Louisville, KY" => "SDF",
-                        "Manchester, NH" => "MHT",                                                                                                            
-                        "Memphis, TN" => "MEM",
-                        "Miami, FL" => "MIA",
-                        "Milwaukee, WI" => "MKE",
-                        "Minneapolis, MN" => "MSP",
-                        "Nashville, TN" => "BNA",
-                        "New Orleans, LA" => "MSY",
-                        "New York, NY - JFK" => "JFK", 
-                        "New York, NY - LGA" => "LGA",
-                        "Newark, NJ" => "EWR",
-                        "Oakland, CA" => "OAK",
-                        "Oklahoma City, OK" => "OKC",                                                      
-                        "Ontario, CA" => "ONT",
-                        "Omaha, NE" => "OMA",
-                        "Orlando, FL" => "MCO",
-                        "Philadelphia, PA" => "PHL",
-                        "Phoenix, AZ" => "PHX",
-                        "Pittsburgh, PA" => "PIT",
-                        "Portland, OR" => "PDX",
-                        "Portland, ME" => "PWM",
-                        "Providence, RI" => "PVD",
-                        "Raleigh, NC" => "RDU",
-                        "Reno, NV" => "RNO",
-                        "Rochester, NY" => "ROC",
-                        "Sacramento, CA" => "SMF",
-                        "Salt Lake City, UT" => "SLC",
-                        "San Antonio, TX" => "SAT",
-                        "San Diego, CA" => "SAN",
-                        "San Francisco, CA" => "SFO",
-                        "San Jose, CA" => "SJC",
-                        "Santa Ana, CA" => "SNA",
-                        "Seattle, WA" => "SEA",
-                        "St Louis, MO" => "STL",
-                        "Syracuse, NY" => "SYR",
-                        "Tampa, FL" => "TPA",
-                        "Tulsa, OK" => "TUL",
-                        "Washington, DC - IAD" => "IAD", #need to make sure to change the D.C. to DC to adhere to Greyhound 
-                        "Washington, DC - DCA" => "DCA",
-                        "White Plains, NY" => "HPN" }
                         
-# These methods are to interpolate the url string with the parameters from the view
-# This is to get the bus cost
-# parameters for the url string interpolation
+  # These methods are to interpolate the url string with the parameters from the view
+  # This is to get the bus cost
 
-T = 1.day.from_now
+  T = 1.day.from_now
 
 
   def dYear
@@ -198,33 +92,33 @@ T = 1.day.from_now
   end
   
   def busOriginCity
-     city_from_regex = /^[^,]*/
-     regex_test1 = Regexp.new(city_from_regex)
-     matchdata = regex_test1.match(city_from)
-     cgi_escaped_city = CGI.escape(matchdata.to_s)
-     cgi_escaped_city
-   end
+    city_from_regex = /^[^,]*/
+    regex_test1 = Regexp.new(city_from_regex)
+    matchdata = regex_test1.match(city_from)
+    cgi_escaped_city = CGI.escape(matchdata.to_s)
+    cgi_escaped_city
+  end
    
-   def busDestinationState
-     regex_parse = /[A-Z]{2}/
-     regex_test1 = Regexp.new(regex_parse)
-     matchdata = regex_test1.match(city_to)
-     matchdata.to_s
-   end
+  def busDestinationState
+    regex_parse = /[A-Z]{2}/
+    regex_test1 = Regexp.new(regex_parse)
+    matchdata = regex_test1.match(city_to)
+    matchdata.to_s
+  end
 
-   def busDestinationCity
-      city_to_regex = /^[^,]*/
-      regex_test1 = Regexp.new(city_to_regex)
-      matchdata = regex_test1.match(city_to)
-      cgi_escaped_city = CGI.escape(matchdata.to_s)
-      cgi_escaped_city
-    end
+  def busDestinationCity
+    city_to_regex = /^[^,]*/
+    regex_test1 = Regexp.new(city_to_regex)
+    matchdata = regex_test1.match(city_to)
+    cgi_escaped_city = CGI.escape(matchdata.to_s)
+    cgi_escaped_city
+  end
   
   # Need to format the views to match the right formatting in the url
 
-  def get_bus_cost()
-   doc = open("https://www.greyhound.com/farefinder/step2.aspx?Redirect=Y&Version=1.0&OriginCity=#{busOriginCity}&OriginState=#{busOriginState}&DestinationCity=#{busDestinationCity}&DestinationState=#{busDestinationState}&Children=0&Legs=2&Adults=1&Seniors=0&DYear=#{dYear}&DMonth=#{dMonth}&DDay=#{dDay}&DHr=&RYear=#{rYear}&RMonth=#{rMonth}&RDay=#{rDay}&RHr=") { |f| Hpricot(f) }
-   bus_price = doc.at("#ctl00_ContentHolder_DepartureGrid_ctl00__0 :nth-child(5)")
+  def get_bus_cost
+    doc = open("https://www.greyhound.com/farefinder/step2.aspx?Redirect=Y&Version=1.0&OriginCity=#{busOriginCity}&OriginState=#{busOriginState}&DestinationCity=#{busDestinationCity}&DestinationState=#{busDestinationState}&Children=0&Legs=2&Adults=1&Seniors=0&DYear=#{dYear}&DMonth=#{dMonth}&DDay=#{dDay}&DHr=&RYear=#{rYear}&RMonth=#{rMonth}&RDay=#{rDay}&RHr=") { |f| Hpricot(f) }
+    bus_price = doc.at("#ctl00_ContentHolder_DepartureGrid_ctl00__0 :nth-child(5)")
     if bus_price == nil
       "Sorry, nothing available at this time."
     else
@@ -232,8 +126,8 @@ T = 1.day.from_now
     end  
   end 
   
- def to_param
-   "/#{id}-to-#{city_to.gsub(/[^a-z0-9]+/i, '-')}-from-#{city_from.gsub(/[^a-z0-9]+/i, '-')}"
- end
+  def to_param
+    "/#{id}-to-#{city_to.gsub(/[^a-z0-9]+/i, '-')}-from-#{city_from.gsub(/[^a-z0-9]+/i, '-')}"
+  end
 end
 
