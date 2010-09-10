@@ -19,8 +19,7 @@ set :group_writable, false
 
 desc "Link in the production database.yml" 
 task :after_update_code do
-  run "rm -f #{release_path}/config/database.yml"
-  run "ln -s #{shared_path}/config/database.yml #{release_path}/config/database.yml" 
+  run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml" 
 end
 
 desc "Link Wordpress" 
