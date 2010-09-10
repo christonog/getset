@@ -1,1 +1,0 @@
-<%= number_to_currency(@location.fixed_car_round_trip) %>
