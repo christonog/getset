@@ -9,13 +9,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100727025742) do
+ActiveRecord::Schema.define(:version => 20100910021147) do
 
   create_table "iatas", :force => true do |t|
     t.string   "iata_city"
     t.string   "iata_code"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "iata_city_permalink"
   end
 
   create_table "kayak_feeds", :force => true do |t|
