@@ -19,7 +19,7 @@ set :group_writable, false
 
 desc 'Symlink shared configs and folders on each release.'
 task :symlink_shared do
-  out =  [ 'public/system', 'config/database.yml', 'config/database.yml', 'vendor/rails' ].collect do |name|
+  out =  [ 'public/system', 'config/database.yml', 'config/mongrel_cluster.yml', 'vendor/rails' ].collect do |name|
            "ln -s #{shared_path}/#{name} #{release_path}/#{name}"
          end.join(' && ')
   run out
