@@ -25,6 +25,8 @@ task :symlink_shared do
   run out
 end
 
+after 'deploy:update_code', 'deploy:symlink_shared'
+
 =begin
 desc "Link in the production database.yml" 
 task :after_update_code, :roles => [:web, :db, :app] do
