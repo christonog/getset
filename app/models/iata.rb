@@ -5,8 +5,8 @@ class Iata < ActiveRecord::Base
 
   class << self
     def locations_to_param(locations)
-      city_from = find_by_iata_city(locations['city_from'])
-      city_to   = find_by_iata_city(locations['city_to'])
+      city_from = locations['city_from'].is_a?(Iata) ? locations['city_from'] : find_by_iata_city(locations['city_from'])
+      city_to   = locations['city_from'].is_a?(Iata) ? locations['city_to']   : find_by_iata_city(locations['city_to'])
       
       "#{city_from.iata_city_permalink}-to-#{city_to.iata_city_permalink}"
     end
@@ -17,6 +17,18 @@ class Iata < ActiveRecord::Base
       city_to   = find_by_iata_city_permalink(city_to)
 
       {"city_to" => city_to.iata_city, "city_from" => city_from.iata_city}
+    end
+
+    def sitemap_locations
+      origins      = all
+      destinations = all
+      out = []
+      origins.each do |o|
+        destinations.each do |d|
+          out << locations_to_param({'city_from' => o, 'city_to' => d}) if o.id != d.id
+        end
+      end
+      out
     end
   end
 

@@ -4,8 +4,8 @@ class SitemapController < ApplicationController
               'http://getsetapp.com/about', 
               'http://getsetapp.com/contact',
               'http://getsetapp.com/faq' ]
-
-     headers['Content-Type'] = 'application/xml'
+     @locations = Iata.sitemap_locations
+     
      render :layout => false
    end
 end
