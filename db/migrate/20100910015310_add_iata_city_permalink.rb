@@ -1,9 +1,13 @@
 class AddIataCityPermalink < ActiveRecord::Migration
   def self.up
-    add_column :iatas, :iata_city_permalink, :string
+    create_table :iatas do |t|
+      t.string :iata_city
+      t.string :iata_code
+      t.string :iata_city_permalink
+    end
   end
 
   def self.down
-    remove_column :iatas, :iata_city_permalink
+    drop_table :iatas
   end
 end
