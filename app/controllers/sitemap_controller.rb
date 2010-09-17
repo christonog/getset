@@ -1,9 +1,9 @@
 class SitemapController < ApplicationController
   def index
-     @urls = ['http://getsetapp.com/', 
-              'http://getsetapp.com/about', 
-              'http://getsetapp.com/contact',
-              'http://getsetapp.com/faq' ]
+     @urls = ['http://www.getsetapp.com/', 
+              'http://www.getsetapp.com/about', 
+              'http://www.getsetapp.com/contact',
+              'http://www.getsetapp.com/faq' ]
      @locations = Iata.sitemap_locations
      
      render :layout => false
