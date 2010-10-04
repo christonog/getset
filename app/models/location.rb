@@ -112,38 +112,55 @@ class Location < ActiveRecord::Base
   # Need to format the views to match the right formatting in the url
 
   def get_bus_cost
-    page = Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak",
-              :params => {
 
-                  'wdf_origin' => 'Los Angeles - Union Station, CA (LAX)',
-                  'wdf_destination' => 'New York - Penn Station, NY (NYP)',
+    # Get Amtrak locations
 
-                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[1]/departDate.date" => 'Mon, Oct 04, 2010',
+    locations_from = Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak/AutoComplete", :params => {'_origin' => "#{self.city_from.scan(/^[\s\w]*/).to_s}"}).body
+    location_from = Hpricot(locations_from).search("//li")[0].try(:html)
 
-                  'requestor' => 'amtrak.presentation.handler.page.rail.AmtrakRailFareFinderPageHandler',
-                  "xwdf_TripType" => "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/tripType",
-                  "wdf_TripType" => 'OneWay',
-                  "xwdf_TripType" => "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/tripType",
-                  "xwdf_origin" => "/sessionWorkflow/productWorkflow[@product='Rail']/travelSelection/journeySelection[1]/departLocation/search",
-                  "xwdf_destination" => "/sessionWorkflow/productWorkflow[@product='Rail']/travelSelection/journeySelection[1]/arriveLocation/search",
-                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[1]/departTime.hourmin" => '',
-                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[2]/departDate.date" => '',
-                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[2]/departTime.hourmin" => '',
-                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/allJourneyRequirements/numberOfTravellers[@key='Adult']" => 1,
-                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/allJourneyRequirements/numberOfTravellers[@key='Child']" => 0,
-                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/allJourneyRequirements/numberOfTravellers[@key='Infant']" => 0,
-                  "_handler=amtrak.presentation.handler.request.rail.AmtrakRailSearchRequestHandler/_xpath=/sessionWorkflow/productWorkflow[@product='Rail'].x" => 17,
-                  "_handler=amtrak.presentation.handler.request.rail.AmtrakRailSearchRequestHandler/_xpath=/sessionWorkflow/productWorkflow[@product='Rail'].y" => 15
-              },
+    locations_to = Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak/AutoComplete", :params => {'_origin' => "#{self.city_to.scan(/^[\s\w]*/).to_s}"}).body
+    location_to = Hpricot(locations_to).search("//li")[0].try(:html)
 
-              :headers => {"User-Agent" => "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.6) Gecko/20100628 Ubuntu/10.04 (lucid) Firefox/3.6.6"}
-     ).body
+    if location_from && location_to
 
-     doc = Hpricot(page)
+      page = Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak",
+                :params => {
 
-     min_price = doc.search("//div[@id='matrix_lowest_price']")[0].to_s.scan(/\$([\d.]*)/).flatten.collect(&:to_i).min
+                    # Locations
+                    'wdf_origin' => location_from,
+                    'wdf_destination' => location_to,
 
-     "$#{min_price}"
+                    # Departure date(tomorrow by default)
+                    "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[1]/departDate.date" => "#{Date.tomorrow.strftime("%a, %b %d, %Y")}",
+
+                    'requestor' => 'amtrak.presentation.handler.page.rail.AmtrakRailFareFinderPageHandler',
+                    "xwdf_TripType" => "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/tripType",
+                    "wdf_TripType" => 'OneWay',
+                    "xwdf_TripType" => "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/tripType",
+                    "xwdf_origin" => "/sessionWorkflow/productWorkflow[@product='Rail']/travelSelection/journeySelection[1]/departLocation/search",
+                    "xwdf_destination" => "/sessionWorkflow/productWorkflow[@product='Rail']/travelSelection/journeySelection[1]/arriveLocation/search",
+                    "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[1]/departTime.hourmin" => '',
+                    "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[2]/departDate.date" => '',
+                    "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[2]/departTime.hourmin" => '',
+                    "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/allJourneyRequirements/numberOfTravellers[@key='Adult']" => 1,
+                    "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/allJourneyRequirements/numberOfTravellers[@key='Child']" => 0,
+                    "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/allJourneyRequirements/numberOfTravellers[@key='Infant']" => 0,
+                    "_handler=amtrak.presentation.handler.request.rail.AmtrakRailSearchRequestHandler/_xpath=/sessionWorkflow/productWorkflow[@product='Rail'].x" => 17,
+                    "_handler=amtrak.presentation.handler.request.rail.AmtrakRailSearchRequestHandler/_xpath=/sessionWorkflow/productWorkflow[@product='Rail'].y" => 15
+                },
+
+                :headers       => {:user_agent => "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)"},
+                :timeout       => 10000, # milliseconds
+                :cache_timeout => 120   # seconds
+       ).body
+
+       doc = Hpricot(page)
+
+       # Search for DIV, take out prices with regexp, find minimal
+       min_price = doc.search("//div[@id='matrix_lowest_price']")[0].to_s.scan(/\$([\d.]*)/).flatten.collect(&:to_i).min
+    end
+
+     min_price ? "$#{min_price}" : "Sorry, nothing available at this time."
 
   end
 
