@@ -1,6 +1,6 @@
 <div id="header-wrap">
 		<div id="header">Travel cost from <span class="htitle"><%= @location.city_from %> to <%= @location.city_to %></span></div>
-	
+
 	<div id="topdiv-wrap2">
 		<div id="topdiv2">all prices round trip</div>
 	</div>
@@ -28,7 +28,8 @@
 					<td align="right" valign="top" width="50%" style="padding: 23px 30px 0 0;"><%= image_tag("icn-bus.png", :size => "55x54") %></td>
 					<td align="left" valign="top" width="50%" style="padding-top: 22px;">
 						<span class="subtitle">by bus:</span><br />
-						<span class="subtitle"><%= @location.get_bus_cost %><br /><%= 1.day.from_now.to_s(:mdy) %> to <%= 7.days.from_now.to_s(:mdy) %><br /></span>
+            <% bus_cost = @location.get_bus_cost %>
+						<span class="<%= bus_cost[:found] ? 'title' : 'subtitle' %>"><%= bus_cost[:amount] %><br /><%= 1.day.from_now.to_s(:mdy) %> to <%= 7.days.from_now.to_s(:mdy) %><br /></span>
 						<span class="subtitle2">Via Greyhound</span>
 						</ br><br />
 						<span class="note">
