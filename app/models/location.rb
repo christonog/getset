@@ -1,7 +1,7 @@
 require 'open-uri'
 class Location < ActiveRecord::Base
   # validates_presence_of :city_to, :city_from, :gas_mileage, :gas_price
-    
+
   # validates_numericality_of :gas_mileage, :message => "please enter the number of miles your car gets per gallon (numbers only)."
 
   # These methods are for getting the gas cost - VIA GEOKIT & GOOGLE MAPS
@@ -37,7 +37,7 @@ class Location < ActiveRecord::Base
   def destination_iata_code
     Iata.find_by_iata_city(city_to).try(:iata_code)
   end
-  
+
   def get_kayak_feed
     p url = "http://www.kayak.com/h/rss/fare?code=#{origin_iata_code}&dest=#{destination_iata_code}&tm=#{Time.now.strftime("%m%Y")}"
     feed = FeedNormalizer::FeedNormalizer.parse(open(url))
@@ -111,20 +111,40 @@ class Location < ActiveRecord::Base
 
   # Need to format the views to match the right formatting in the url
 
-#  def get_bus_cost
-#    post_url  = 'https://www.greyhound.com/services/farefinder.asmx/Search'
-#    post_body = ""
-#  end
-
   def get_bus_cost
-    p url = "https://www.greyhound.com/farefinder/step2.aspx?Redirect=Y&Version=1.0&OriginCity=#{busOriginCity}&OriginState=#{busOriginState}&DestinationCity=#{busDestinationCity}&DestinationState=#{busDestinationState}&Children=0&Legs=2&Adults=1&Seniors=0&DYear=#{dYear}&DMonth=#{dMonth}&DDay=#{dDay}&DHr=&RYear=#{rYear}&RMonth=#{rMonth}&RDay=#{rDay}&RHr="
-    doc = open(url) { |f| Hpricot(f) }
-    bus_price = doc.at("#ctl00_ContentHolder_DepartureGrid_ctl00__0 :nth-child(5)")
-    if bus_price == nil
-      "Sorry, nothing available at this time."
-    else
-      bus_price.to_plain_text[/\$[0-9\.]+/]
-    end
+    page = Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak",
+              :params => {
+
+                  'wdf_origin' => 'Los Angeles - Union Station, CA (LAX)',
+                  'wdf_destination' => 'New York - Penn Station, NY (NYP)',
+
+                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[1]/departDate.date" => 'Mon, Oct 04, 2010',
+
+                  'requestor' => 'amtrak.presentation.handler.page.rail.AmtrakRailFareFinderPageHandler',
+                  "xwdf_TripType" => "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/tripType",
+                  "wdf_TripType" => 'OneWay',
+                  "xwdf_TripType" => "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/tripType",
+                  "xwdf_origin" => "/sessionWorkflow/productWorkflow[@product='Rail']/travelSelection/journeySelection[1]/departLocation/search",
+                  "xwdf_destination" => "/sessionWorkflow/productWorkflow[@product='Rail']/travelSelection/journeySelection[1]/arriveLocation/search",
+                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[1]/departTime.hourmin" => '',
+                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[2]/departDate.date" => '',
+                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[2]/departTime.hourmin" => '',
+                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/allJourneyRequirements/numberOfTravellers[@key='Adult']" => 1,
+                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/allJourneyRequirements/numberOfTravellers[@key='Child']" => 0,
+                  "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/allJourneyRequirements/numberOfTravellers[@key='Infant']" => 0,
+                  "_handler=amtrak.presentation.handler.request.rail.AmtrakRailSearchRequestHandler/_xpath=/sessionWorkflow/productWorkflow[@product='Rail'].x" => 17,
+                  "_handler=amtrak.presentation.handler.request.rail.AmtrakRailSearchRequestHandler/_xpath=/sessionWorkflow/productWorkflow[@product='Rail'].y" => 15
+              },
+
+              :headers => {"User-Agent" => "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.6) Gecko/20100628 Ubuntu/10.04 (lucid) Firefox/3.6.6"}
+     ).body
+
+     doc = Hpricot(page)
+
+     min_price = doc.search("//div[@id='matrix_lowest_price']")[0].to_s.scan(/\$([\d.]*)/).flatten.collect(&:to_i).min
+
+     "$#{min_price}"
+
   end
 
   def to_param
