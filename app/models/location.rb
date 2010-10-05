@@ -41,10 +41,12 @@ class Location < ActiveRecord::Base
   def get_kayak_feed
     p url = "http://www.kayak.com/h/rss/fare?code=#{origin_iata_code}&dest=#{destination_iata_code}&tm=#{Time.now.strftime("%m%Y")}"
     feed = FeedNormalizer::FeedNormalizer.parse(open(url))
-    if feed.entries.first.title == nil
-      "Sorry, nothing available at this time."
-    else
-      feed.entries.first.title
+    unless feed.entries.blank?
+      if feed.entries.first.title == nil
+        "Sorry, nothing available at this time."
+      else
+        feed.entries.first.title
+      end
     end
   end
 
