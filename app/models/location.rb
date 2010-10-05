@@ -155,16 +155,18 @@ class Location < ActiveRecord::Base
     amtrak_location = if results.size > 1
 
                         # Parsing user-specified location for additional indicators to detect exact Amtrak location
+                        city = Iata.find_by_iata_city(location)
                         indicators = []
-                        indicators << Iata.find_by_iata_city(location).iata_code
+                        indicators << city.amtrak_code
+                        indicators << city.iata_code
                         indicators << location.scan(/\w*$/).to_s         # Chicago, IL - ~ORD~
                         indicators << location.scan(/\w,\s(\w*)/).to_s   # Chicago, ~IL~ - ORD
-                        indicators.uniq
+                        indicators.uniq!.compact!
 
                         # Detecting required Amtrak location result with additional indicators in location name(including IATA code)
-                        matched_results = indicators.collect do |indicator|
+                        indicators.collect do |indicator|
                           results.detect {|location| location =~ Regexp.new(indicator)}
-                        end.uniq.compact.to_s
+                        end.uniq.compact.first.to_s
 
                       else
                         results.first unless results.first == "No stations match your entry."
