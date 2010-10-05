@@ -115,12 +115,11 @@ class Location < ActiveRecord::Base
 
     location_from, location_to = [city_from, city_to].collect {|user_location| get_amtrak_location_name_for user_location}
 
-    if location_from && location_to
+    unless location_from.blank? && location_to.blank?
       min_price_trip_for_departure   = get_amtrak_min_price_for location_from, location_to, 1.week.from_now
       min_price_trip_for_return      = get_amtrak_min_price_for location_to, location_from, 2.weeks.from_now
+      min_price = (min_price_trip_for_departure + min_price_trip_for_return) if (min_price_trip_for_departure && min_price_trip_for_return)
     end
-
-    min_price = (min_price_trip_for_departure + min_price_trip_for_return) if (min_price_trip_for_departure && min_price_trip_for_return)
 
     if min_price
       {
@@ -145,12 +144,34 @@ class Location < ActiveRecord::Base
   private
 
   def get_amtrak_location_name_for(location)
-      # Taking user-specified city name with regexp and getting right location string from Amtrak
-      Hpricot(Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak/AutoComplete",
-                             :params => {'_origin' => "#{location.scan(/^[\s\w]*/).to_s}"},
-                             :timeout       => 10000, # milliseconds
-                             :cache_timeout => 3600   # seconds
-                            ).body).search("//li")[0].try(:html)
+
+    # Taking user-specified city name with regexp and getting right location strings from Amtrak
+    results = Hpricot(Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak/AutoComplete",
+                                             :params => {'_origin' => "#{location.scan(/^[\s\w]*/).to_s}"},
+                                             :timeout       => 10000, # milliseconds
+                                             :cache_timeout => 3600   # seconds
+                                            ).body).search("//li").collect(&:html)
+
+    amtrak_location = if results.size > 1
+
+                        # Parsing user-specified location for additional indicators to detect exact Amtrak location
+                        indicators = []
+                        indicators << Iata.find_by_iata_city(location).iata_code
+                        indicators << location.scan(/\w*$/).to_s         # Chicago, IL - ~ORD~
+                        indicators << location.scan(/\w,\s(\w*)/).to_s   # Chicago, ~IL~ - ORD
+                        indicators.uniq
+
+                        # Detecting required Amtrak location result with additional indicators in location name(including IATA code)
+                        matched_results = indicators.collect do |indicator|
+                          results.detect {|location| location =~ Regexp.new(indicator)}
+                        end.uniq.compact.to_s
+
+                      else
+                        results.first unless results.first == "No stations match your entry."
+                      end
+
+
+
   end
 
   def get_amtrak_min_price_for(location_from, location_to, departure_date)
