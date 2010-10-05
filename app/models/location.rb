@@ -113,19 +113,47 @@ class Location < ActiveRecord::Base
 
   def get_bus_cost
 
-    # Taking user-specified city name with regexp and getting right location string from Amtrak
-    get_amtrak_location = lambda do |location|
+    location_from, location_to = [city_from, city_to].collect {|user_location| get_amtrak_location_name_for user_location}
+
+    if location_from && location_to
+      min_price_trip_for_departure   = get_amtrak_min_price_for location_from, location_to, 1.week.from_now
+      min_price_trip_for_return      = get_amtrak_min_price_for location_to, location_from, 2.weeks.from_now
+    end
+
+    min_price = (min_price_trip_for_departure + min_price_trip_for_return) if (min_price_trip_for_departure && min_price_trip_for_return)
+
+    if min_price
+      {
+        :found => true,
+        :amount => "$#{min_price}"
+      }
+    else
+      {
+        :found => false,
+        :amount => 'Sorry, nothing available at this time.'
+      }
+    end
+
+  end
+
+  def to_param
+    "/#{id}-to-#{city_to.gsub(/[^a-z0-9]+/i, '-')}-from-#{city_from.gsub(/[^a-z0-9]+/i, '-')}"
+  end
+
+
+
+  private
+
+  def get_amtrak_location_name_for(location)
+      # Taking user-specified city name with regexp and getting right location string from Amtrak
       Hpricot(Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak/AutoComplete",
                              :params => {'_origin' => "#{location.scan(/^[\s\w]*/).to_s}"},
                              :timeout       => 10000, # milliseconds
                              :cache_timeout => 3600   # seconds
                             ).body).search("//li")[0].try(:html)
-    end
+  end
 
-    location_from, location_to = [city_from, city_to].collect(&get_amtrak_location)
-
-    if location_from && location_to
-
+  def get_amtrak_min_price_for(location_from, location_to, departure_date)
 
       # Getting Amtrak search results HTML content
       page = Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak",
@@ -136,7 +164,7 @@ class Location < ActiveRecord::Base
                     'wdf_destination' => location_to,
 
                     # Departure date
-                    "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[1]/departDate.date" => "#{(Date.today + 1.week).strftime("%a, %b %d, %Y")}",
+                    "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/journeyRequirements[1]/departDate.date" => "#{departure_date.strftime("%a, %b %d, %Y")}",
 
                     'requestor' => 'amtrak.presentation.handler.page.rail.AmtrakRailFareFinderPageHandler',
                     "xwdf_TripType" => "/sessionWorkflow/productWorkflow[@product='Rail']/tripRequirements/tripType",
@@ -162,24 +190,8 @@ class Location < ActiveRecord::Base
 
        # Searching for DIV with lowest prices, taking out prices with regexp, finding minimal
        min_price = doc.search("//div[@id='matrix_lowest_price']")[0].to_s.scan(/\$([\d.]*)/).flatten.collect(&:to_i).min
-    end
-
-    if min_price
-      {
-        :found => true,
-        :amount => "$#{min_price}"
-      }
-    else
-      {
-        :found => false,
-        :amount => 'Sorry, nothing available at this time.'
-      }
-    end
-
   end
 
-  def to_param
-    "/#{id}-to-#{city_to.gsub(/[^a-z0-9]+/i, '-')}-from-#{city_from.gsub(/[^a-z0-9]+/i, '-')}"
-  end
 end
+
 
