@@ -24,7 +24,9 @@ Rails::Initializer.run do |config|
   config.gem "calendar_date_select"
   config.gem 'formtastic'
   config.gem 'feed-normalizer'
-  
+  config.gem 'typhoeus'
+#  config.gem 'httparty'
+
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
   # config.plugins = [ :exception_notification, :ssl_requirement, :all ]
@@ -52,10 +54,10 @@ Rails::Initializer.run do |config|
  #   :user_name      => "feedback@getsetapp.com",
  #  :password       => "S8LG3pfek2ac"
  # }
-  
+
 end
 
-ActionMailer::Base.default_url_options[:host] = "getsetapp.com" 
+ActionMailer::Base.default_url_options[:host] = "getsetapp.com"
 ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.smtp_settings = {
     :address  => "localhost",

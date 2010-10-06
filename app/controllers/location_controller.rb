@@ -21,9 +21,13 @@ class LocationController < ApplicationController
 
     location_param = Iata.locations_from_param(params[:location])
     @location = Location.new(location_param)
+<<<<<<< HEAD
     @title = "flight, car, train, and bus travel cost comparison from #{@location.city_from} to #{@location.city_to}"
     @time = 1.day.from_now.strftime("%m/%d/%Y")
     @future_time = 7.days.from_now.strftime("%m/%d/%Y")  
+=======
+    @title = "flight, car, and bus travel cost comparison from #{@location.city_from} to #{@location.city_to}"
+>>>>>>> 82d3263fc6968a47a86b027691651d405b9bcbb6
   end
   
   #might have to add a new action here to retrieve items already saved in the db.
