@@ -3,7 +3,8 @@
 
 	<div id="topdiv-wrap2">
 		<div id="topdiv2">all prices round trip</div>
-	</div>
+</div>
+</div>
 	<div id="content-wrap">
 		<div id="content">
 			<br />
@@ -12,43 +13,43 @@
 					<td align="right" valign="center" width="50%" style="padding: 0 30px 0 0;"><%= image_tag("icn-plane.png", :size => "55x54") %></td>
 					<td align="left" valign="top" width="50%">
 						<span class="subtitle">by plane:</span><br />
-						<span class="title"><%= @location.get_kayak_feed %><br /></span>
-						<span class="subtitle2"><img src="http://imps.acetrk.com/i/22O/6K.jpg?subid=2&websiteid=2859" border=0 width=1 height=1><a href="http://trk.acetrk.com/r/BJ/22O/27F/?url_id=415">Find more flights on Kayak.com</a></span><br />
+						<span class="title"><%= @location.get_kayak_feed -%><br /></span>
+						<span class="subtitle2"><img src="http://imps.acetrk.com/i/22O/6K.jpg?subid=2&websiteid=2859" border=0 width=1 height=1>
+							<a href="http://trk.acetrk.com/r/BJ/22O/27F/?url_id=415">Find more flights on Kayak.com</a></span><br />
 					</td>
 				</tr>
 				<tr>
 					<td align="right" valign="center" width="50%" style="padding: 23px 30px 0 0;"><%= image_tag("icn-car.png", :size => "55x54") %></td>
 					<td align="left" valign="top" width="50%" style="padding-top: 23px;">
 						<span class="subtitle">by car:</span><br />
-						<span class="title"><%= number_to_currency(@location.fixed_car_round_trip) %> in gas cost</span><br />
-						<img src="http://imps.acetrk.com/i/22O/6B.jpg?subid=2&websiteid=2859" border=0 width=1 height=1><a href="http://trk.acetrk.com/r/BJ/22O/27F/?url_id=406">Search for rental cars on Kayak.com</a>
+						<span class="title"><%= number_to_currency(@location.fixed_car_round_trip) -%> in gas cost</span><br />
+						<img src="http://imps.acetrk.com/i/22O/6B.jpg?subid=2&websiteid=2859" border=0 width=1 height=1>
+						<a href="http://trk.acetrk.com/r/BJ/22O/27F/?url_id=406">Search for rental cars on Kayak.com</a>
 					</td>
 				</tr>
 				<tr>
 					<td align="right" valign="center" width="50%" style="padding: 23px 30px 0 0;"><%= image_tag("train_big.png", :size => "55x54") %></td>
 					<td align="left" valign="top" width="50%" style="padding-top: 23px;">
 						<span class="subtitle">by train:</span><br />
-						<span class="title"> Train costs not available at this time.</span><br />
+						<% train_cost = @location.get_amtrak_cost -%>
+							<span class="<%= train_cost[:found] ? 'title' : 'subtitle' -%>"><%= train_cost[:amount] -%><br />
+							<%= 1.week.from_now.to_s(:mdy) %> to <%= 2.weeks.from_now.to_s(:mdy) %><br /></span>
 						<span class="subtitle2">Via Amtrak</span>
 					</td>
-				</tr>
-				
+				</tr>				
 				<tr>
-					<td align="right" valign="top" width="50%" style="padding: 23px 30px 0 0;"><%= image_tag("icn-bus.png", :size => "55x54") %></td>
-					<td align="left" valign="top" width="50%" style="padding-top: 22px;">
+					<td align="right" valign="center" width="50%" style="padding: 23px 30px 0 0;"><%= image_tag("icn-bus.png", :size => "55x54") %></td>
+					<td align="left" valign="top" width="50%" style="padding-top: 23px;">
 						<span class="subtitle">by bus:</span><br />
-            <% bus_cost = @location.get_bus_cost %>
-						<span class="<%= bus_cost[:found] ? 'title' : 'subtitle' %>"><%= bus_cost[:amount] %><br /><%= 1.day.from_now.to_s(:mdy) %> to <%= 7.days.from_now.to_s(:mdy) %><br /></span>
+	          <span class="title">Sorry, bus prices not available at this time.<br /></span>
 						<span class="subtitle2">Via Greyhound</span>
-						<br /><br />
-						<span class="note">
-							</span>
-					<br />
-						<%= link_to(image_tag("btn-tryanothersearch.png", :border => 0, :size => "193x30"), {:controller => "location", :action => "start"}, :alt => "Discover the cheapest method of travel with Getset") %>
-					</td>
+						<br />
+						<span class="note"></span>
+				  	<br />
+						<%= link_to(image_tag("btn-tryanothersearch.png", :border => 0, :size => "193x30"), {:controller => "location", :action => "start"}, :alt => "Discover the 			cheapest method of travel with Getset") %>
+					</td>	
 				</tr>
 			</table>
-			<br />
-		</div>
 	</div>
 </div>
+

@@ -111,9 +111,7 @@ class Location < ActiveRecord::Base
     cgi_escaped_city
   end
 
-  # Need to format the views to match the right formatting in the url
-
-  def get_bus_cost
+  def get_amtrak_cost
 
     location_from, location_to = [city_from, city_to].collect {|user_location| get_amtrak_location_name_for user_location}
 
@@ -131,19 +129,13 @@ class Location < ActiveRecord::Base
     else
       {
         :found => false,
-        :amount => 'Sorry, nothing available at this time.'
+        :amount => 'Sorry, It appears that one of your selected cities does not have a train station nearby.'
       }
     end
 
   end
 
-  def to_param
-    "/#{id}-to-#{city_to.gsub(/[^a-z0-9]+/i, '-')}-from-#{city_from.gsub(/[^a-z0-9]+/i, '-')}"
-  end
-
-
-
-  private
+private
 
   def get_amtrak_location_name_for(location)
 
@@ -171,7 +163,7 @@ class Location < ActiveRecord::Base
                         end.uniq.compact.first.to_s
 
                       else
-                        results.first unless results.first == "No stations match your entry."
+                        results.first unless results.first == "Sorry, no stations match the destination or origin city."
                       end
 
 
