@@ -111,9 +111,7 @@ class Location < ActiveRecord::Base
     cgi_escaped_city
   end
 
-  # Need to format the views to match the right formatting in the url
-
-  def get_bus_cost
+  def get_amtrak_cost
 
     location_from, location_to = [city_from, city_to].collect {|user_location| get_amtrak_location_name_for user_location}
 
@@ -131,29 +129,29 @@ class Location < ActiveRecord::Base
     else
       {
         :found => false,
-        :amount => 'Sorry, nothing available at this time.'
+        :amount => 'Sorry, It appears that one of your selected cities does not have a train station nearby.'
       }
     end
 
   end
 
-  def to_param
-    "/#{id}-to-#{city_to.gsub(/[^a-z0-9]+/i, '-')}-from-#{city_from.gsub(/[^a-z0-9]+/i, '-')}"
-  end
-
-
-
-  private
+private
 
   def get_amtrak_location_name_for(location)
 
     city = Iata.find_by_iata_city(location)
-    Hpricot(Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak/AutoComplete",
-                                             #:params => {'_origin' => "#{location.scan(/^[\s\w]*/).to_s}"},
-                                             :params => {'_origin' => "#{city.amtrak_code}"},
-                                             :timeout       => 10000, # milliseconds
-                                             :cache_timeout => 3600   # seconds
-                                            ).body).search("//li").collect(&:html).try(:first) unless city.amtrak_code.blank?
+
+    amtrak_location = unless city.amtrak_code.blank?
+      response = Hpricot(Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak/AutoComplete",
+                                               #:params => {'_origin' => "#{location.scan(/^[\s\w]*/).to_s}"},
+                                               :params => {'_origin' => "#{city.amtrak_code}"},
+                                               :timeout       => 10000, # milliseconds
+                                               :cache_timeout => 3600   # seconds
+                                              ).body).search("//li").collect(&:html).try(:first)
+
+      response if response != "No stations match your entry."
+    end
+
   end
 
   def get_amtrak_min_price_for(location_from, location_to, departure_date)
