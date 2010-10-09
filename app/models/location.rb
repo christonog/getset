@@ -143,7 +143,6 @@ private
 
     amtrak_location = unless city.amtrak_code.blank?
       response = Hpricot(Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak/AutoComplete",
-                                               #:params => {'_origin' => "#{location.scan(/^[\s\w]*/).to_s}"},
                                                :params => {'_origin' => "#{city.amtrak_code}"},
                                                :timeout       => 10000, # milliseconds
                                                :cache_timeout => 3600   # seconds
