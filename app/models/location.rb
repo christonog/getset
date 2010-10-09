@@ -147,35 +147,13 @@ class Location < ActiveRecord::Base
 
   def get_amtrak_location_name_for(location)
 
-    # Taking user-specified city name with regexp and getting right location strings from Amtrak
-    results = Hpricot(Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak/AutoComplete",
-                                             :params => {'_origin' => "#{location.scan(/^[\s\w]*/).to_s}"},
+    city = Iata.find_by_iata_city(location)
+    Hpricot(Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak/AutoComplete",
+                                             #:params => {'_origin' => "#{location.scan(/^[\s\w]*/).to_s}"},
+                                             :params => {'_origin' => "#{city.amtrak_code}"},
                                              :timeout       => 10000, # milliseconds
                                              :cache_timeout => 3600   # seconds
-                                            ).body).search("//li").collect(&:html)
-
-    amtrak_location = if results.size > 1
-
-                        # Parsing user-specified location for additional indicators to detect exact Amtrak location
-                        city = Iata.find_by_iata_city(location)
-                        indicators = []
-                        indicators << city.amtrak_code
-                        indicators << city.iata_code
-                        indicators << location.scan(/\w*$/).to_s         # Chicago, IL - ~ORD~
-                        indicators << location.scan(/\w,\s(\w*)/).to_s   # Chicago, ~IL~ - ORD
-                        indicators.uniq!.compact!
-
-                        # Detecting required Amtrak location result with additional indicators in location name(including IATA code)
-                        indicators.collect do |indicator|
-                          results.detect {|location| location =~ Regexp.new(indicator)}
-                        end.uniq.compact.first.to_s
-
-                      else
-                        results.first unless results.first == "No stations match your entry."
-                      end
-
-
-
+                                            ).body).search("//li").collect(&:html).try(:first) unless city.amtrak_code.blank?
   end
 
   def get_amtrak_min_price_for(location_from, location_to, departure_date)
