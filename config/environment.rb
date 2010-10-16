@@ -60,10 +60,10 @@ end
 ActionMailer::Base.default_url_options[:host] = "getsetapp.com"
 ActionMailer::Base.delivery_method = :smtp
 ActionMailer::Base.smtp_settings = {
-    :address  => "localhost",
+    :address  => "getsetapp.com",
     :port  => 25,
     :domain  => "getsetapp.com",
     :authentication  => :login,
     :user_name  => "feedback@getsetapp.com",
-    :password  => "S8LG3pfek2ac"
+    :password  => "qwerty123"
 }
