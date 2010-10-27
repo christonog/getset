@@ -135,38 +135,43 @@ class Location < ActiveRecord::Base
 
   end
 
+  def get_greyhound_cost
+
+    location_from, location_to = [city_from, city_to].collect {|user_location| get_greyhound_location_name_for user_location}
+
+    unless location_from.blank? && location_to.blank?
+      min_price = get_greyhound_min_price_for(location_from, location_to, 1.week.from_now, 2.weeks.from_now)
+    end
+
+    if min_price
+      {
+        :found => true,
+        :amount => "$#{min_price}"
+      }
+    else
+      {
+        :found => false,
+        :amount => 'Sorry, nothing available at this time'
+      }
+    end
+
+  end
+
 private
 
   def get_amtrak_location_name_for(location)
 
-    # Taking user-specified city name with regexp and getting right location strings from Amtrak
-    results = Hpricot(Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak/AutoComplete",
-                                             :params => {'_origin' => "#{location.scan(/^[\s\w]*/).to_s}"},
-                                             :timeout       => 10000, # milliseconds
-                                             :cache_timeout => 3600   # seconds
-                                            ).body).search("//li").collect(&:html)
+    city = Iata.find_by_iata_city(location)
 
-    amtrak_location = if results.size > 1
+    amtrak_location = unless city.amtrak_code.blank?
+      response = Hpricot(Typhoeus::Request.post("http://tickets.amtrak.com/itd/amtrak/AutoComplete",
+                                               :params => {'_origin' => "#{city.amtrak_code}"},
+                                               :timeout       => 10000, # milliseconds
+                                               :cache_timeout => 3600   # seconds
+                                              ).body).search("//li").collect(&:html).try(:first)
 
-                        # Parsing user-specified location for additional indicators to detect exact Amtrak location
-                        city = Iata.find_by_iata_city(location)
-                        indicators = []
-                        indicators << city.amtrak_code
-                        indicators << city.iata_code
-                        indicators << location.scan(/\w*$/).to_s         # Chicago, IL - ~ORD~
-                        indicators << location.scan(/\w,\s(\w*)/).to_s   # Chicago, ~IL~ - ORD
-                        indicators.uniq!.compact!
-
-                        # Detecting required Amtrak location result with additional indicators in location name(including IATA code)
-                        indicators.collect do |indicator|
-                          results.detect {|location| location =~ Regexp.new(indicator)}
-                        end.uniq.compact.first.to_s
-
-                      else
-                        results.first unless results.first == "Sorry, no stations match the destination or origin city."
-                      end
-
-
+      response if response != "No stations match your entry."
+    end
 
   end
 
@@ -209,6 +214,108 @@ private
        min_price = doc.search("//div[@id='matrix_lowest_price']")[0].to_s.scan(/\$([\d.]*)/).flatten.collect(&:to_i).min
   end
 
+
+  def get_greyhound_location_name_for(location)
+
+    city = Iata.find_by_iata_city(location)
+
+    agent = Mechanize.new
+    agent.log = Logger.new(STDOUT)
+    agent.request_headers = {
+      'Host'=>'www.greyhound.com' ,
+      'User-Agent'=>'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.10) Gecko/20100915 Ubuntu/10.04 (lucid) Firefox/3.6.10' ,
+      'Accept'=>'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' ,
+      'Accept-Language'=>'en-us,en;q=0.5' ,
+      'Accept-Encoding'=>'gzip,deflate' ,
+      'Accept-Charset'=>'ISO-8859-1,utf-8;q=0.7,*;q=0.7' ,
+      'Keep-Alive'=>'115' ,
+      'Connection'=>'keep-alive'
+    }
+    agent.get('http://www.greyhound.com/')
+
+    response = Typhoeus::Request.post("http://www.greyhound.com/services/locations.asmx/GetOriginLocationsByName",
+                                     :headers       => {
+      'Host'=>'www.greyhound.com' ,
+      :Agent=>'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.10) Gecko/20100915 Ubuntu/10.04 (lucid) Firefox/3.6.10' ,
+      :Accepts=>'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' ,
+      'Accept-Language'=>'en-us,en;q=0.5' ,
+      #'Accept-Encoding'=>'gzip,deflate' ,
+      'Accept-Charset'=>'ISO-8859-1,utf-8;q=0.7,*;q=0.7' ,
+      'Keep-Alive'=>'115' ,
+      'Connection'=>'keep-alive' ,
+      'Content-Type'=>'application/json; charset=utf-8' ,
+      'Referer'=>'https://www.greyhound.com' ,
+      #'Content-Length'=>'377',
+      'Cookie'=>"ASP.NET_SessionId=#{agent.cookies.first.value}",
+    },
+      #:body         => '{"request":{"__type":"Greyhound.Website.DataObjects.ClientSearchRequest","Mode":0,"Origin":"151239|New York/NY","Destination":"892001|Los Angeles/CA","Departs":"\/Date(1287853200000)\/","Returns":"\/Date(1288458000000)\/","TimeDeparts":null,"TimeReturns":null,"RT":true,"Adults":1,"Seniors":0,"Children":0,"PromoCode":"","DiscountCode":"","Card":"","CardExpiration":"10/2010"}}'
+      :body         => "{\"context\":{\"Text\":\"#{location.scan(/^([\w\s]*,\s\w*)/).to_s}\",\"NumberOfItems\":0}}"
+                                    ).body
+
+    JSON.parse(response)['d']['Items'].first['Value']
+
+  end
+
+  def get_greyhound_min_price_for(location_from, location_to, departure_date, returning_date)
+
+    agent = Mechanize.new
+    agent.log = Logger.new(STDOUT)
+    agent.request_headers = {
+      'Host'=>'www.greyhound.com' ,
+      'User-Agent'=>'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.10) Gecko/20100915 Ubuntu/10.04 (lucid) Firefox/3.6.10' ,
+      'Accept'=>'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' ,
+      'Accept-Language'=>'en-us,en;q=0.5' ,
+      'Accept-Encoding'=>'gzip,deflate' ,
+      'Accept-Charset'=>'ISO-8859-1,utf-8;q=0.7,*;q=0.7' ,
+      'Keep-Alive'=>'115' ,
+      'Connection'=>'keep-alive'
+    }
+    agent.get('http://www.greyhound.com/')
+
+    #debugger
+
+    request_body = '{"request":{"__type":"Greyhound.Website.DataObjects.ClientSearchRequest","Mode":0,"Origin":"'+location_from+'","Destination":"'+location_to+'","Departs":"\/Date('+departure_date.to_date.to_time.to_i.to_s+'000)\/","Returns":"\/Date('+returning_date.to_date.to_time.to_i.to_s+'000)\/","TimeDeparts":null,"TimeReturns":null,"RT":true,"Adults":1,"Seniors":0,"Children":0,"PromoCode":"","DiscountCode":"","Card":"","CardExpiration":"10/2010"}}'
+    #request_body = '{"request":{"__type":"Greyhound.Website.DataObjects.ClientSearchRequest","Mode":0,"Origin":"893420|Santa Barbara/CA","Destination":"240317|Detroit/MI","Departs":"\/Date(1288458000000)\/","Returns":"\/Date(1289066400000)\/","TimeDeparts":null,"TimeReturns":null,"RT":true,"Adults":1,"Seniors":0,"Children":0,"PromoCode":"","DiscountCode":"","Card":"","CardExpiration":"10/2010"}}'
+
+    request = Typhoeus::Request.post("http://www.greyhound.com/services/farefinder.asmx/Search",
+                                     :method        => :post,
+                                     :headers       => {
+      #'Host'=>'www.greyhound.com' ,
+      #:Agent=>'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.10) Gecko/20100915 Ubuntu/10.04 (lucid) Firefox/3.6.10' ,
+      #:Accepts=>'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' ,
+      #'Accept-Language'=>'en-us,en;q=0.5' ,
+      #'Accept-Encoding'=>'gzip,deflate' ,
+      #'Accept-Charset'=>'ISO-8859-1,utf-8;q=0.7,*;q=0.7' ,
+      #'Keep-Alive'=>'115' ,
+      #'Connection'=>'keep-alive' ,
+      'Content-Type'=>'application/json; charset=utf-8' ,
+      'Referer'=>'https://www.greyhound.com' ,
+      'Content-Length'=> "#{request_body.length}",
+      #'Content-Length'=> "377",
+      'Cookie'=>"ASP.NET_SessionId=#{agent.cookies.first.value}",
+    },
+      #:body         => '{"request":{"__type":"Greyhound.Website.DataObjects.ClientSearchRequest","Mode":0,"Origin":"151239|New York/NY","Destination":"892001|Los Angeles/CA","Departs":"\/Date(1288458000000)\/","Returns":"\/Date(1289066400000)\/","TimeDeparts":null,"TimeReturns":null,"RT":true,"Adults":1,"Seniors":0,"Children":0,"PromoCode":"","DiscountCode":"","Card":"","CardExpiration":"10/2010"}}'
+      #:body         => '{"request":{"__type":"Greyhound.Website.DataObjects.ClientSearchRequest","Mode":0,"Origin":"350636|Charleston/SC","Destination":"350262|Columbia/SC","Departs":"/Date(1288458000000)/","Returns":"/Date(1289066400000)/","TimeDeparts":null,"TimeReturns":null,"RT":true,"Adults":1,"Seniors":0,"Children":0,"PromoCode":"","DiscountCode":"","Card":"","CardExpiration":"10/2010"}}'
+      :body         => request_body
+                                    ).body
+
+
+    agent.request_headers = {
+      'Host'=>'www.greyhound.com' ,
+      'User-Agent'=>'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.2.10) Gecko/20100915 Ubuntu/10.04 (lucid) Firefox/3.6.10' ,
+      'Accept'=>'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' ,
+      'Accept-Language'=>'en-us,en;q=0.5' ,
+      'Accept-Encoding'=>'gzip,deflate' ,
+      'Accept-Charset'=>'ISO-8859-1,utf-8;q=0.7,*;q=0.7' ,
+      'Keep-Alive'=>'115' ,
+      'Connection'=>'keep-alive',
+      'Cookie'=>"ASP.NET_SessionId=#{agent.cookies.first.value}",
+    }
+    agent.get('https://www.greyhound.com/farefinder/step2.aspx')
+
+    agent.page.body.scan(/\$(\d{2,4}.\d{2})/).flatten.collect(&:to_i).min
+
+  end
 end
 
 

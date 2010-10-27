@@ -25,6 +25,8 @@ Rails::Initializer.run do |config|
   config.gem 'formtastic'
   config.gem 'feed-normalizer'
   config.gem 'typhoeus'
+  config.gem 'mechanize'
+  config.gem 'json'
 #  config.gem 'httparty'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
