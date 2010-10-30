@@ -51,8 +51,8 @@ class Location < ActiveRecord::Base
   end
 
   # These methods are to interpolate the url string with the parameters from the view
-  # This is to get the bus cost
-
+  # This is to get the bus cost - lines 56-112 depreciated in favor of Vladimir's changes.
+=begin
   T = 1.day.from_now
 
 
@@ -110,6 +110,7 @@ class Location < ActiveRecord::Base
     cgi_escaped_city = CGI.escape(matchdata.to_s)
     cgi_escaped_city
   end
+=end
 
   def get_amtrak_cost
 
@@ -158,7 +159,7 @@ class Location < ActiveRecord::Base
   end
 
 private
-
+  # private Amtrak methods
   def get_amtrak_location_name_for(location)
 
     city = Iata.find_by_iata_city(location)
@@ -214,6 +215,7 @@ private
        min_price = doc.search("//div[@id='matrix_lowest_price']")[0].to_s.scan(/\$([\d.]*)/).flatten.collect(&:to_i).min
   end
 
+  #private Greyhound Methods
 
   def get_greyhound_location_name_for(location)
 
