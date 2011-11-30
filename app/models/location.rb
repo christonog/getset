@@ -50,68 +50,6 @@ class Location < ActiveRecord::Base
     end
   end
 
-  # These methods are to interpolate the url string with the parameters from the view
-  # This is to get the bus cost - lines 56-112 depreciated in favor of Vladimir's changes.
-=begin
-  T = 1.day.from_now
-
-
-  def dYear
-    T.strftime("1"+"%y") #the formatting in the greyhound url is 1 + the last two digits of the current year ie, 110 for the year 2010
-  end
-
-  def dMonth
-    T.month
-  end
-
-  def dDay
-    T.day
-  end
-
-  def rYear
-    t = 7.days.from_now #same formatting as the dYear
-    t.strftime("1"+"%y")
-  end
-
-  def rMonth
-    7.days.from_now.month
-  end
-
-  def rDay
-    7.days.from_now.day
-  end
-
-  def busOriginState
-    regex_parse = /[A-Z]{2}/
-    regex_test1 = Regexp.new(regex_parse)
-    matchdata = regex_test1.match(city_from)
-    matchdata.to_s
-  end
-
-  def busOriginCity
-    city_from_regex = /^[^,]*/
-    regex_test1 = Regexp.new(city_from_regex)
-    matchdata = regex_test1.match(city_from)
-    cgi_escaped_city = CGI.escape(matchdata.to_s)
-    cgi_escaped_city
-  end
-
-  def busDestinationState
-    regex_parse = /[A-Z]{2}/
-    regex_test1 = Regexp.new(regex_parse)
-    matchdata = regex_test1.match(city_to)
-    matchdata.to_s
-  end
-
-  def busDestinationCity
-    city_to_regex = /^[^,]*/
-    regex_test1 = Regexp.new(city_to_regex)
-    matchdata = regex_test1.match(city_to)
-    cgi_escaped_city = CGI.escape(matchdata.to_s)
-    cgi_escaped_city
-  end
-=end
-
   def get_amtrak_cost
 
     location_from, location_to = [city_from, city_to].collect {|user_location| get_amtrak_location_name_for user_location}
@@ -319,5 +257,68 @@ private
 
   end
 end
+
+
+  # These methods are to interpolate the url string with the parameters from the view
+  # This is to get the bus cost - lines 56-112 depreciated in favor of Vladimir's changes.
+=begin
+  T = 1.day.from_now
+
+
+  def dYear
+    T.strftime("1"+"%y") #the formatting in the greyhound url is 1 + the last two digits of the current year ie, 110 for the year 2010
+  end
+
+  def dMonth
+    T.month
+  end
+
+  def dDay
+    T.day
+  end
+
+  def rYear
+    t = 7.days.from_now #same formatting as the dYear
+    t.strftime("1"+"%y")
+  end
+
+  def rMonth
+    7.days.from_now.month
+  end
+
+  def rDay
+    7.days.from_now.day
+  end
+
+  def busOriginState
+    regex_parse = /[A-Z]{2}/
+    regex_test1 = Regexp.new(regex_parse)
+    matchdata = regex_test1.match(city_from)
+    matchdata.to_s
+  end
+
+  def busOriginCity
+    city_from_regex = /^[^,]*/
+    regex_test1 = Regexp.new(city_from_regex)
+    matchdata = regex_test1.match(city_from)
+    cgi_escaped_city = CGI.escape(matchdata.to_s)
+    cgi_escaped_city
+  end
+
+  def busDestinationState
+    regex_parse = /[A-Z]{2}/
+    regex_test1 = Regexp.new(regex_parse)
+    matchdata = regex_test1.match(city_to)
+    matchdata.to_s
+  end
+
+  def busDestinationCity
+    city_to_regex = /^[^,]*/
+    regex_test1 = Regexp.new(city_to_regex)
+    matchdata = regex_test1.match(city_to)
+    cgi_escaped_city = CGI.escape(matchdata.to_s)
+    cgi_escaped_city
+  end
+=end
 
 
